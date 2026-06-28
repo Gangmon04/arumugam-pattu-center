@@ -1,0 +1,21 @@
+{
+  "phones": [
+    "+91 80725 75135",
+    "+91 95513 48390",
+    "+91 63808 72779"
+  ],
+  "email": "arumugampattucenter@gmail.com",
+  "whatsapp": "918072575135",
+  "instagram": "https://www.instagram.com/arumugam_pattu_centre?igsh=dmpibGd4MDdvczdr",
+  "workingHours": "Mon - Sun: 9:00 AM - 8:00 PM",
+  "locations": [
+    {
+      "name": "Branch 1",
+      "mapLink": "https://maps.app.goo.gl/DFZCNWN6XpWFrxSD6?g_st=aw"
+    },
+    {
+      "name": "Branch 2",
+      "mapLink": "https://maps.app.goo.gl/nkRixw8VpwN69HBC8?g_st=aw"
+    }
+  ]
+}

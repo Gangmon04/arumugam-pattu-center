@@ -1,0 +1,16 @@
+@import './Globals.css';
+
+@import './Navbar.css';
+@import './Banner.css';
+@import './SplitSections.css';
+@import './Steps.css';
+@import './Features.css';
+@import './SareeTypes.css';
+
+@import './Reviews.css';
+@import './Coverage.css';
+@import './FAQ.css';
+
+@import './ContactForm.css';
+
+@import './Responsive.css';

@@ -1,0 +1,101 @@
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 12px;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    position: static;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background: var(--bg-white);
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .nav-links.mobile-open {
+    display: flex;
+  }
+
+  .banner-section {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .banner-left {
+    height: 300px;
+  }
+
+  .banner-right {
+    padding: 40px 20px;
+    text-align: center;
+    align-items: center;
+  }
+
+  .banner-title {
+    font-size: 32px;
+  }
+
+  .banner-buttons {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .banner-buttons .banner-btn {
+    width: fit-content;
+    box-sizing: border-box;
+  }
+
+  .trust-banner {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .trust-stat {
+    width: 180px;
+    text-align: left;
+  }
+
+  .split-section {
+    flex-direction: column;
+    padding: 40px 20px;
+  }
+
+  .how-it-works-panel,
+  .why-us-panel,
+  .unused-saree-panel,
+  .coverage-panel,
+  .faq-panel,
+  .booking-panel {
+    padding: 24px;
+  }
+
+  .steps-container {
+    flex-direction: column;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 900px) {
+  .footer-content { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .footer-content { grid-template-columns: 1fr; }
+}

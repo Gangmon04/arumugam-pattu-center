@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+  --primary-color: #8A70B6;
+  /* Elegant deeper Lavender for buttons */
+  --primary-color-dark: #684F93;
+  /* Hover state */
+  --primary-gold: #B69E66;
+  /* Soft gold for stars/accents */
+  --primary-gold-light: #E6E6FA;
+  /* Light lavender */
+  --bg-cream: #FDFBFF;
+  /* Extremely light lavender-white */
+  --bg-white: #FFFFFF;
+  --bg-alt: #E6E6FA;
+  /* The requested Lavender for sections */
+  --text-dark: #3F2C5F;
+  /* Deep eggplant/plum for headings */
+  --text-muted: #7A6996;
+  /* Muted lavender-grey */
+  --border-color: #E0D6F1;
+  /* Soft lavender border */
+  --font-heading: 'Roboto', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+
+.app-container {
+  width: 100%;
+  background-color: var(--bg-cream);
+  overflow-x: hidden;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 32px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--primary-color);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.btn-sell-now {
+  background: var(--primary-gold);
+  color: #fff;
+  border: none;
+  padding: 8px 24px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.lang-toggle {
+  display: flex;
+  background: var(--bg-white);
+  border: 1px solid var(--primary-color);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--primary-color);
+}
+
+.lang-btn.active {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.saree-types-section,
+.reviews-section {
+  padding: 40px 20px;
+}
+
+.whatsapp-float { position: fixed; bottom: 24px; right: 24px; background: #25D366; color: #fff; border-radius: 50%; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2); z-index: 1000; cursor: pointer; border: none; }
+.whatsapp-icon { width: 32px; height: 32px; filter: brightness(0) invert(1); }

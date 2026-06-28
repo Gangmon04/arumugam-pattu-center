@@ -1,0 +1,13 @@
+
+.booking-success-container { text-align: center; padding: 40px 20px; background: var(--bg-cream); border-radius: 8px; border: 1px solid var(--border-color); }
+.booking-success-icon { margin-bottom: 16px; }
+.booking-success-title { color: var(--text-dark); margin-bottom: 8px; font-size: 1.2rem; }
+.booking-success-desc { color: var(--text-muted); font-size: 0.9rem; }
+.location-input-group { display: flex; gap: 8px; width: 100%; }
+.location-input { flex: 1; min-width: 0; }
+.location-btn-action { background: var(--primary-color); color: #fff; border: none; padding: 0 16px; border-radius: 4px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.location-success-text { color: var(--primary-color); font-size: 0.75rem; margin-top: 4px; font-weight: 500; display: block; }
+.upload-box-sm-pointer { cursor: pointer; }
+.hidden-input { display: none; }
+.upload-icon { flex-shrink: 0; }
+.upload-text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
