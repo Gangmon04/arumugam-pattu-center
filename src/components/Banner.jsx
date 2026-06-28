@@ -1,6 +1,6 @@
 import { Phone, Calendar, ShieldCheck, HandCoins, Star } from 'lucide-react';
 import siteData from '../data/siteData.json';
-import '../styles/banner.css';
+import '../styles/Banner.css';
 
 export default function banner() {
   return (
