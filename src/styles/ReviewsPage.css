@@ -284,8 +284,9 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  max-width: 670px;
+  max-width: 480px;
   flex-wrap: nowrap;
+  gap: 0;
 }
 
 .google-rating-wreath {
@@ -329,19 +330,64 @@
   .reviews-kpi-container {
     flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
   }
   .reviews-kpi-item {
     min-width: 140px;
+    flex: unset;
   }
   .reviews-kpi-divider {
     display: none;
   }
+
+  /* Keep wreaths visible but smaller — stay in a row */
   .google-rating-banner {
-    flex-direction: column;
-    gap: 20px;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    max-width: 360px;
   }
+
   .google-rating-wreath {
-    height: 80px;
+    display: block;
+    height: 70px;
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .google-rating-title {
+    font-size: 0.82rem;
+  }
+
+  .google-rating-center {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* CTA banner stacks on mobile */
+  .reviews-cta-banner {
+    flex-direction: column;
+    padding: 24px 16px;
+    align-items: flex-start;
+  }
+
+  .reviews-cta-left {
+    flex: unset;
+  }
+
+  .reviews-cta-buttons {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .reviews-cta-btn-primary,
+  .reviews-cta-btn-outline {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .reviews-grid-container {
+    grid-template-columns: 1fr;
   }
 }
 

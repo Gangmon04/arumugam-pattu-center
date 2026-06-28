@@ -1,121 +1,157 @@
+/* ── Minimal Footer ─────────────────────── */
+
 .footer-container {
-  background: #f8f6ff;
-  border-top: 1px solid #eee;
-  width: 100%;
+  background: #f3f0fb;
+  border-top: 1px solid #e0d6f1;
   margin-top: 40px;
 }
 
-.footer-content {
-  max-width: 1200px;
+.footer-minimal {
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 60px 20px;
-  display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr 1.5fr;
-  gap: 40px;
-  align-items: flex-start;
+  padding: 40px 24px 24px;
+}
+
+/* Brand block */
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .footer-logo {
-  height: 48px;
-  margin-bottom: 20px;
+  height: 44px;
+  object-fit: contain;
 }
 
-.footer-desc {
-  color: var(--text-dark);
-  font-size: 0.9rem;
-  line-height: 1.6;
-  margin-bottom: 24px;
-  max-width: 250px;
+.footer-tagline {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
 }
 
-.social-icons-wrapper {
+/* Divider */
+.footer-divider {
+  height: 1px;
+  background: #e0d6f1;
+  margin: 24px 0;
+}
+
+/* Middle row */
+.footer-mid {
   display: flex;
-  gap: 12px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
-.social-icon {
+/* Nav links */
+.footer-nav {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #6d51ac;
-  color: #fff;
-  text-decoration: none;
-}
-
-.footer-heading {
-  color: #2d2d42;
-  font-weight: bold;
-  margin-bottom: 20px;
-  font-size: 1.05rem;
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
 .footer-link {
-  color: #6d51ac;
+  color: var(--primary-color);
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: opacity 0.2s;
 }
 
-.contact-info-wrapper {
+.footer-link:hover {
+  opacity: 0.7;
+}
+
+/* Contact row */
+.footer-contact-row {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
-.contact-row {
+.footer-contact-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: #6d51ac;
-  font-size: 0.9rem;
-  font-weight: 500;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
+.footer-contact-item:hover {
+  color: var(--primary-color);
+}
+
+/* Bottom bar */
 .footer-bottom-bar {
-  background: #6d51ac;
-  padding: 24px 20px;
-  color: #fff;
-  font-size: 0.85rem;
-}
-
-.footer-bottom-content {
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.footer-bottom-links {
-  display: flex;
   gap: 12px;
+  flex-wrap: wrap;
+  color: var(--text-muted);
+  font-size: 0.8rem;
 }
 
-.footer-bottom-link {
+/* Social icons */
+.footer-socials {
+  display: flex;
+  gap: 10px;
+}
+
+.footer-social-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary-color);
   color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-  opacity: 0.9;
+  transition: opacity 0.2s;
 }
 
-.footer-bottom-divider {
-  opacity: 0.5;
+.footer-social-icon:hover {
+  opacity: 0.8;
 }
 
-.s-icon svg { width: 16px; height: 16px; }
-.contact-list-item svg { width: 18px; height: 18px; }
+/* ── Mobile ──────────────────────────────── */
+@media (max-width: 768px) {
+  .footer-minimal {
+    padding: 32px 16px 20px;
+  }
 
-.footer-whatsapp-icon { width: 18px; height: 18px; }
+  .footer-brand {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .footer-mid {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .footer-nav {
+    gap: 16px;
+  }
+
+  .footer-contact-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .footer-bottom-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
