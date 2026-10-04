@@ -1,0 +1,18 @@
+{
+  "name": "pattu-sarees-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "build": "npm --prefix frontend run build && npm --prefix backend run prisma:generate",
+    "postinstall": "npm --prefix backend run prisma:generate"
+  },
+  "dependencies": {
+    "@neon/config": "^1.8.3",
+    "@neon/env": "^1.5.0"
+  }
+}
