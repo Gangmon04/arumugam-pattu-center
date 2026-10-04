@@ -64,6 +64,59 @@ export default function Contact() {
     };
   }, [photoPreview]);
 
+  // Client-side image optimization helper to avoid Vercel 4.5MB payload limits
+  const compressImageIfNeeded = async (file) => {
+    if (!file) return file;
+    // Keep HEIC or files under 1.5MB untouched
+    if (file.type === 'image/heic' || file.type === 'image/heif' || file.size <= 1.5 * 1024 * 1024) {
+      return file;
+    }
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 1600;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          canvas.toBlob(
+            (blob) => {
+              if (blob && blob.size < file.size) {
+                const compressedFile = new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), {
+                  type: 'image/jpeg',
+                  lastModified: Date.now(),
+                });
+                resolve(compressedFile);
+              } else {
+                resolve(file);
+              }
+            },
+            'image/jpeg',
+            0.85
+          );
+        };
+        img.onerror = () => resolve(file);
+        img.src = e.target.result;
+      };
+      reader.onerror = () => resolve(file);
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handlePhotoSelect = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -197,8 +250,9 @@ export default function Contact() {
       // 2. If customer selected a saree photo, upload to Cloudinary via memory buffer
       if (photoFile && bookingId) {
         try {
+          const fileToUpload = await compressImageIfNeeded(photoFile);
           const photoPayload = new FormData();
-          photoPayload.append('photo', photoFile);
+          photoPayload.append('photo', fileToUpload);
 
           const photoRes = await fetch(`/api/bookings/${bookingId}/photo`, {
             method: 'POST',
