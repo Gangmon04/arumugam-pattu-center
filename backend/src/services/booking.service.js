@@ -2,6 +2,7 @@ import prisma from "../config/prisma.js";
 import AppError from "../utils/AppError.js";
 import { Readable } from 'stream';
 import cloudinary from '../config/cloudinary.js';
+import { sendAdminSMSNotification } from "./sms.service.js";
 
 
 // In-memory fallback store in case database is temporarily disconnected during development
@@ -94,6 +95,11 @@ export const createBookingService = async (bookingData) => {
     };
     localBookingsStore.unshift(savedBooking);
   }
+
+  // Send background SMS alert to Admin (does not block customer response)
+  sendAdminSMSNotification(savedBooking).catch((err) => {
+    console.error("[Booking Service] Background SMS alert failed:", err.message);
+  });
 
   return savedBooking;
 };
