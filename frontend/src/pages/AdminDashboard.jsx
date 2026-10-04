@@ -117,8 +117,11 @@ export default function AdminDashboard() {
                 {loading ? 'Authenticating...' : <><LogIn size={18} /> Enter Portal</>}
               </button>
             </form>
+
+            <div className="admin-card-footer-badge">
+              Arumugam Pattu Center • Management Portal
+            </div>
           </div>
-          <p className="admin-portal-footer-note">Arumugam Pattu Center • Admin Management Portal</p>
         </div>
       </div>
     );
