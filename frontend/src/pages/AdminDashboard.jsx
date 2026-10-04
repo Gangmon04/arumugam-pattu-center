@@ -10,7 +10,8 @@ import {
   AlertCircle,
   ExternalLink,
   X,
-  Image as ImageIcon 
+  Image as ImageIcon,
+  LogOut
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import '../styles/AdminDashboard.css';
@@ -209,17 +210,34 @@ export default function AdminDashboard() {
       
       <div className="admin-dashboard-panel">
         <div className="admin-dashboard-header">
-          <div>
+          <div className="admin-title-group">
             <h1>Customer Leads</h1>
             <p>Manage and track your incoming old pattu saree pickup requests.</p>
           </div>
-          <div className="admin-header-actions">
-            <button className="btn-refresh" onClick={() => verifyAndFetch(localStorage.getItem('admin_passcode'))} title="Refresh data" disabled={loading}>
-              <RefreshCw size={16} className={loading ? 'spin' : ''} /> Refresh
+          <div className="admin-header-actions-compact">
+            <button 
+              type="button"
+              className="btn-refresh-icon" 
+              onClick={() => verifyAndFetch(localStorage.getItem('admin_passcode'))} 
+              title="Refresh leads" 
+              aria-label="Refresh leads"
+              disabled={loading}
+            >
+              <RefreshCw size={15} className={loading ? 'spin' : ''} />
             </button>
-            <button className="btn-logout" onClick={handleLogout}>Logout</button>
+            <button 
+              type="button"
+              className="btn-logout-compact" 
+              onClick={handleLogout}
+              title="Logout from admin portal"
+              aria-label="Logout"
+            >
+              <LogOut size={13} />
+              <span>Logout</span>
+            </button>
           </div>
         </div>
+
 
         {/* Filters and Search Bar */}
         <div className="admin-dashboard-toolbar">
