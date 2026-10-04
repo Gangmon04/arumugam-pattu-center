@@ -17,23 +17,13 @@ export const sendAdminSMSNotification = async (booking) => {
     return { success: false, reason: "Admin phone not set" };
   }
 
-  // Format a clean, concise SMS alert
-  const customerName = booking.customerName || booking.name || "Customer";
-  const customerPhone = booking.phone || "Not provided";
-  const sareeType = booking.sareeType || "Old Pattu Saree";
-  const location = booking.location || booking.pickupAddress || "Chennai";
-  const pickupTime = booking.pickupTime ? `Time: ${booking.pickupTime}` : "";
+  // Format an ultra-compact single-part SMS (strictly <= 155 chars to guarantee 1 SMS part = ₹5)
+  const shortName = (booking.customerName || booking.name || "Customer").trim().slice(0, 20);
+  const cleanCustPhone = (booking.phone || "").replace(/[^0-9]/g, "").slice(-10);
+  const shortSaree = (booking.sareeType || "Pattu Saree").trim().slice(0, 22);
+  const shortLoc = (booking.location || booking.pickupAddress || "Chennai").trim().slice(0, 30);
 
-  const lines = [
-    "Arumugam Pattu: New Pickup Request!",
-    `Customer: ${customerName}`,
-    `Phone: ${customerPhone}`,
-    `Saree: ${sareeType}`,
-    `Location: ${location}`,
-  ];
-  if (pickupTime) lines.push(pickupTime);
-
-  const messageText = lines.join("\n");
+  const messageText = `Arumugam Pattu Lead: ${shortName} | Ph:${cleanCustPhone} | Saree:${shortSaree} | Loc:${shortLoc}`.slice(0, 155);
 
   try {
     const cleanNumbers = adminPhone.replace(/[^0-9]/g, "").slice(-10);
