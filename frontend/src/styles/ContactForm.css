@@ -1,0 +1,575 @@
+/* ── Booking Form Card ────────────────────────────────────── */
+
+.pickup-form-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #ECE7F6;
+  box-shadow: 0 10px 30px rgba(91, 62, 150, 0.05);
+  padding: 36px 32px;
+  width: 100%;
+}
+
+.pickup-card-header {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.pickup-card-title {
+  color: #5B3E96;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 6px;
+}
+
+.pickup-card-subtitle {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+/* Form Layout */
+.pickup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: #3F2C5F;
+}
+
+.form-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid #E2D9F3;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #3F2C5F;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input::placeholder {
+  color: #A396BC;
+  font-size: 0.86rem;
+}
+
+.form-input:focus {
+  border-color: #6B46C1;
+  box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.12);
+}
+
+/* Location with GPS */
+.location-field-group {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.location-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.location-gps-btn {
+  width: 44px;
+  height: 44px;
+  background: #5B3E96;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.location-gps-btn:hover {
+  background: #4B2F83;
+  transform: scale(1.03);
+}
+
+.location-gps-btn.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.location-success-indicator {
+  color: #16A34A;
+  font-size: 0.76rem;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Custom Select Dropdowns */
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-trigger {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid #E2D9F3;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: #3F2C5F;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.select-trigger.placeholder-color {
+  color: #A396BC;
+}
+
+.select-trigger.active,
+.select-trigger:focus {
+  border-color: #6B46C1;
+  box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.12);
+}
+
+.chevron-icon {
+  color: #7A6996;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.select-trigger.active .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.select-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #E2D9F3;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(91, 62, 150, 0.12);
+  list-style: none;
+  padding: 6px 0;
+  margin: 0;
+  z-index: 50;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.select-dropdown-menu li {
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  color: #3F2C5F;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.select-dropdown-menu li:hover {
+  background: #F4EFFF;
+  color: #5B3E96;
+}
+
+/* Textarea */
+.form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #E2D9F3;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: #3F2C5F;
+  outline: none;
+  resize: vertical;
+  min-height: 70px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-textarea::placeholder {
+  color: #A396BC;
+  font-size: 0.86rem;
+}
+
+.form-textarea:focus {
+  border-color: #6B46C1;
+  box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.12);
+}
+
+/* Submit Button */
+.btn-submit-pickup {
+  width: 100%;
+  height: 48px;
+  background: #5B3E96;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+  transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(91, 62, 150, 0.2);
+}
+
+.btn-submit-pickup:hover {
+  background: #4B2F83;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(91, 62, 150, 0.28);
+}
+
+.btn-submit-pickup:active {
+  transform: translateY(0);
+}
+
+.btn-submit-pickup:disabled {
+  background: #A396BC;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-loading-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Trust Badges Bar */
+.trust-badges-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1px solid #ECE7F6;
+}
+
+.trust-badge-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #5B3E96;
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.badge-icon {
+  color: #5B3E96;
+  flex-shrink: 0;
+}
+
+/* Success State Box */
+.booking-success-box {
+  text-align: center;
+  padding: 40px 20px;
+  background: #FAF8FE;
+  border-radius: 12px;
+  border: 1px solid #ECE7F6;
+}
+
+.booking-success-icon {
+  color: #16A34A;
+  margin-bottom: 14px;
+}
+
+.booking-success-heading {
+  color: #3F2C5F;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.booking-success-text {
+  color: #7A6996;
+  font-size: 0.9rem;
+  max-width: 380px;
+  margin: 0 auto 20px;
+  line-height: 1.5;
+}
+
+.btn-book-another {
+  background: #5B3E96;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-book-another:hover {
+  background: #4B2F83;
+}
+
+/* ── Saree Photo Upload Styles ──────────────────────────────── */
+.label-optional {
+  color: #8C7B9E;
+  font-size: 0.78rem;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.photo-file-hidden {
+  display: none !important;
+}
+
+.photo-upload-dropzone {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: #FCFAFF;
+  border: 1.5px dashed #D6C8EF;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.photo-upload-dropzone:hover {
+  background: #F6F0FE;
+  border-color: #6B46C1;
+  box-shadow: 0 2px 8px rgba(107, 70, 193, 0.08);
+}
+
+.dropzone-icon-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #EFE7FA;
+  color: #5B3E96;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.photo-upload-dropzone:hover .dropzone-icon-circle {
+  transform: scale(1.06);
+  background: #E5D6F8;
+}
+
+.dropzone-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dropzone-title {
+  color: #3F2C5F;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.dropzone-hint {
+  color: #8C7B9E;
+  font-size: 0.76rem;
+}
+
+/* Attached Photo Card */
+.photo-attached-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #FAF8FE;
+  border: 1px solid #E2D9F3;
+  border-radius: 10px;
+  gap: 12px;
+}
+
+.photo-attached-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.photo-preview-thumb {
+  width: 46px;
+  height: 46px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid #D6C8EF;
+  flex-shrink: 0;
+}
+
+.photo-heic-badge {
+  width: 46px;
+  height: 46px;
+  border-radius: 6px;
+  background: #EFE7FA;
+  color: #5B3E96;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  border: 1px solid #D6C8EF;
+}
+
+.photo-attached-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.photo-attached-name {
+  color: #3F2C5F;
+  font-size: 0.84rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.photo-attached-size {
+  color: #8C7B9E;
+  font-size: 0.74rem;
+}
+
+.photo-attached-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.btn-change-photo {
+  background: transparent;
+  color: #5B3E96;
+  border: 1px solid #D6C8EF;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-change-photo:hover {
+  background: #EFE7FA;
+  border-color: #6B46C1;
+}
+
+.btn-remove-photo {
+  background: transparent;
+  color: #9C8EB2;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-remove-photo:hover {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+.photo-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #DC2626;
+  font-size: 0.76rem;
+  margin-top: 4px;
+}
+
+/* Partial Upload Warning in Success Box */
+.photo-upload-partial-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 0 auto 18px;
+  max-width: 420px;
+  text-align: left;
+  color: #92400E;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.partial-warning-icon {
+  color: #D97706;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .pickup-form-card {
+    padding: 24px 18px;
+  }
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .trust-badges-bar {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 8px;
+  }
+  .photo-attached-name {
+    max-width: 140px;
+  }
+}
+
+

@@ -1,0 +1,15 @@
+node_modules
+# Keep environment variables out of version control
+.env
+.env.*
+!.env.example
+
+/src/generated/prisma
+uploads/*
+!uploads/.gitkeep
+
+# Agent skills & editor caches
+.agents/
+.claude/
+.windsurf/
+skills-lock.json

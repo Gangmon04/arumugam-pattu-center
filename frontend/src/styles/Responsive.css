@@ -1,0 +1,290 @@
+/* =========================================
+   TABLET — ≤ 900px
+   ========================================= */
+@media (max-width: 900px) {
+
+  /* Saree Types */
+  .saree-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .saree-types-section {
+    padding: 40px 24px;
+  }
+
+  /* Split panels side-by-side still, but reduce padding */
+  .split-section {
+    padding: 40px 24px;
+    gap: 20px;
+  }
+
+  .how-it-works-panel,
+  .why-us-panel,
+  .unused-saree-panel,
+  .coverage-panel,
+  .faq-panel,
+  .booking-panel {
+    padding: 28px;
+  }
+
+  /* Reviews: 2 cards on tablet */
+  .reviews-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  /* Contact page */
+  .contact-section-split {
+    padding: 40px 24px;
+    gap: 24px;
+  }
+}
+
+/* =========================================
+   MOBILE — ≤ 768px
+   ========================================= */
+@media (max-width: 768px) {
+
+  /* --- Navbar --- */
+  .navbar {
+    padding: 12px 16px;
+    height: auto;
+    min-height: 70px;
+    justify-content: space-between;
+    overflow: visible;
+  }
+
+  .nav-logo {
+    position: static;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background: var(--bg-white);
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--border-color);
+    z-index: 999;
+  }
+
+  .nav-links.mobile-open {
+    display: flex;
+  }
+
+  /* --- Banner --- */
+  .banner-section {
+    flex-direction: column;
+    height: auto;
+    background: linear-gradient(180deg, #DFD6F3 0%, #E7DEF6 240px, #F6F2FB 100%);
+  }
+
+  .banner-left {
+    height: 320px;
+    width: 100%;
+  }
+
+  .banner-image {
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 65%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 65%, rgba(0, 0, 0, 0) 100%);
+  }
+
+  .banner-right {
+    padding: 32px 20px;
+    text-align: center;
+    align-items: center;
+  }
+
+  .banner-title {
+    font-size: 28px;
+  }
+
+  .banner-buttons {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .banner-buttons .banner-btn {
+    width: fit-content;
+    box-sizing: border-box;
+  }
+
+  .trust-banner {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .trust-stat {
+    width: 180px;
+    text-align: left;
+  }
+
+  /* --- Saree Types --- */
+  .saree-types-section {
+    padding: 40px 16px;
+  }
+
+  .saree-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .saree-card-img {
+    height: 150px;
+  }
+
+  .saree-card-banner {
+    font-size: 0.78rem;
+    padding: 10px 6px;
+    min-height: 52px;
+  }
+
+  /* --- Split Sections (How It Works, Why Us, Coverage, FAQ) --- */
+  .split-section {
+    flex-direction: column;
+    padding: 32px 16px;
+    gap: 20px;
+  }
+
+  .how-it-works-panel,
+  .why-us-panel,
+  .unused-saree-panel,
+  .coverage-panel,
+  .faq-panel,
+  .booking-panel {
+    padding: 24px 16px;
+    width: 100%;
+  }
+
+  /* --- How It Works steps --- */
+  .steps-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .step-line {
+    display: none;
+  }
+
+  .step-item {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  /* --- Unused Saree → Coverage panels --- */
+  .unused-visual {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .visual-card {
+    width: 80%;
+  }
+
+  .visual-arrow {
+    transform: rotate(90deg);
+  }
+
+  /* Coverage map + locations */
+  .coverage-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .map-img {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .coverage-locations-row {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .loc-chip-large {
+    max-width: 160px;
+    font-size: 0.9rem;
+  }
+
+  /* --- Booking form --- */
+  .booking-form .form-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* --- Testimonials / Reviews --- */
+  .reviews-section {
+    padding: 40px 16px;
+  }
+
+  .reviews-carousel {
+    gap: 8px;
+  }
+
+  .reviews-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .review-card {
+    padding: 24px 16px;
+  }
+
+  .nav-arrow {
+    padding: 4px;
+  }
+
+  /* --- Contact Page --- */
+  .contact-section-split {
+    flex-direction: column;
+    padding: 32px 16px;
+  }
+
+  .contact-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .contact-page-header {
+    padding: 40px 16px 28px;
+  }
+
+}
+
+/* =========================================
+   SMALL MOBILE — ≤ 480px
+   ========================================= */
+@media (max-width: 480px) {
+  .banner-title {
+    font-size: 24px;
+  }
+
+  .panel-title {
+    font-size: 1.2rem;
+  }
+
+  .saree-card-img {
+    height: 130px;
+  }
+
+  .contact-card {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

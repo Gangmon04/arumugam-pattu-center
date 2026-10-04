@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Customer {
+  id Int @id @default(autoincrement())
+  name String
+  phone String
+  email String?
+  address String?
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  //Relationship
+  enquiries Enquiry[]
+}
+
+model Enquiry {
+  id Int @id @default(autoincrement())
+  customerId Int
+  sareeType String
+  numberOfSarees Int @default(1)
+  pickupRequired Boolean @default(true)
+  pickupAddress String?
+  pickupTime String?
+  coords String?
+  sareeImageUrl String?
+  message String?
+  status String @default("PENDING")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //Relationship
+  customer Customer @relation(fields: [customerId], references: [id])
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("STAFF")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

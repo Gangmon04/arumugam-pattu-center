@@ -1,0 +1,29 @@
+{
+  "phones": [
+    "+91 80725 75135",
+    "+91 95513 48390",
+    "+91 63808 72779"
+  ],
+  "email": "arumugampattucenter@gmail.com",
+  "whatsapp": "917358443545",
+  "instagram": "https://www.instagram.com/arumugam_pattu_centre?igsh=dmpibGd4MDdvczdr",
+  "workingHours": "Mon - Sun: 9:00 AM - 8:00 PM",
+  "locations": [
+    {
+      "id": "kovilambakkam",
+      "name": "Branch 1 (Kovilambakkam)",
+      "area": "Kovilambakkam",
+      "address": "10/139, Thiruvalluvar Nagar 5th St, Vedachalam Nagar, Kovilambakkam, Chennai - 600129",
+      "mapLink": "https://maps.app.goo.gl/DFZCNWN6XpWFrxSD6?g_st=aw",
+      "embedUrl": "https://www.google.com/maps?q=Arumugam+old+pattu+saree+centre+10+139+Thiruvalluvar+Nagar+Kovilambakkam+Chennai&output=embed"
+    },
+    {
+      "id": "madipakkam",
+      "name": "Branch 2 (Madipakkam)",
+      "area": "Madipakkam",
+      "address": "1/400, 4th St, Karthikeyapuram, Madipakkam, Chennai - 600091",
+      "mapLink": "https://maps.app.goo.gl/nkRixw8VpwN69HBC8?g_st=aw",
+      "embedUrl": "https://www.google.com/maps?q=Arumugam+old+pattu+saree+buyer+1/400+4th+St+Karthikeyapuram+Madipakkam+Chennai&output=embed"
+    }
+  ]
+}
