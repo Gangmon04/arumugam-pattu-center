@@ -42,27 +42,33 @@ export default function AdminDashboard() {
   }, []);
 
   const verifyAndFetch = async (codeToVerify) => {
+    if (!codeToVerify || !codeToVerify.trim()) {
+      setError('Please enter the admin passcode.');
+      setIsAuthenticated(false);
+      return;
+    }
+
     setLoading(true);
     setError('');
+    const cleanPasscode = codeToVerify.trim();
+
     try {
       const res = await fetch('/api/bookings', {
         headers: {
-          'Authorization': `Bearer ${codeToVerify}`
+          'Authorization': `Bearer ${cleanPasscode}`
         }
       });
       
       const data = await res.json();
       
-      if (res.status === 401) {
-        setError('Invalid Admin Passcode. Please try again.');
+      if (res.status === 401 || !res.ok) {
+        setError(data.message || data.error || 'Invalid Admin Passcode. Access denied.');
         localStorage.removeItem('admin_passcode');
         setIsAuthenticated(false);
-      } else if (!res.ok) {
-        setError(data.error || 'Server error occurred.');
       } else {
-        setLeads(data.leads || []);
+        setLeads(data.leads || data.data || []);
         setIsAuthenticated(true);
-        localStorage.setItem('admin_passcode', codeToVerify);
+        localStorage.setItem('admin_passcode', cleanPasscode);
       }
     } catch (err) {
       console.error(err);
@@ -74,7 +80,10 @@ export default function AdminDashboard() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (!passcode) return;
+    if (!passcode || !passcode.trim()) {
+      setError('Please enter the admin passcode.');
+      return;
+    }
     verifyAndFetch(passcode);
   };
 
@@ -99,9 +108,13 @@ export default function AdminDashboard() {
     );
 
     try {
+      const activeCode = localStorage.getItem('admin_passcode') || passcode;
       const res = await fetch(`/api/bookings/${leadId}/status`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${activeCode?.trim()}`
+        },
         body: JSON.stringify({ status: newStatus }),
       });
       if (!res.ok) {
@@ -113,6 +126,7 @@ export default function AdminDashboard() {
       setUpdatingId(null);
     }
   };
+
 
   // Filter leads based on search query across all fields and case-insensitive status
   const filteredLeads = leads.filter(lead => {
