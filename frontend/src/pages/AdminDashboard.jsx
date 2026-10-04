@@ -168,8 +168,8 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Leads Table */}
-        <div className="leads-table-container">
+        {/* Leads Content: Desktop Table & Mobile Cards */}
+        <div className="leads-display-wrapper">
           {filteredLeads.length === 0 ? (
             <div className="no-leads-state">
               <CheckCircle2 size={40} className="no-leads-icon" />
@@ -177,20 +177,115 @@ export default function AdminDashboard() {
               <p>Try refreshing or adjusting your filters.</p>
             </div>
           ) : (
-            <table className="leads-table">
-              <thead>
-                <tr>
-                  <th>Date & Time</th>
-                  <th>Customer Name</th>
-                  <th>Contact Info</th>
-                  <th>Location</th>
-                  <th>Saree Details</th>
-                  <th>Saree Photo</th>
-                  <th>Pickup Option</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
+            <>
+              {/* 1. Desktop & Tablet Table (Screens > 768px) */}
+              <div className="leads-table-container">
+                <table className="leads-table">
+                  <thead>
+                    <tr>
+                      <th>Date & Time</th>
+                      <th>Customer Name</th>
+                      <th>Contact Info</th>
+                      <th>Location</th>
+                      <th>Saree Details</th>
+                      <th>Saree Photo</th>
+                      <th>Pickup Option</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredLeads.map((lead) => {
+                      let parsedCoords = null;
+                      if (lead.coordinates) {
+                        try {
+                          parsedCoords = typeof lead.coordinates === 'string' 
+                            ? JSON.parse(lead.coordinates) 
+                            : lead.coordinates;
+                        } catch (e) {
+                          console.error("Coords parsing error", e);
+                        }
+                      }
+
+                      const sareePhoto = lead.sareeImageUrl || lead.saree_image_url;
+
+                      return (
+                        <tr key={lead.id}>
+                          <td className="col-date">
+                            {new Date(lead.created_at || lead.createdAt).toLocaleDateString('en-IN', {
+                              day: '2-digit',
+                              month: 'short',
+                              year: 'numeric'
+                            })}<br/>
+                            <span className="lead-time">
+                              {new Date(lead.created_at || lead.createdAt).toLocaleTimeString('en-IN', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </span>
+                          </td>
+                          <td className="col-name">{lead.name}</td>
+                          <td className="col-contact">
+                            <a href={`tel:${lead.phone}`} className="lead-link">
+                              <Phone size={14} /> {lead.phone}
+                            </a>
+                          </td>
+                          <td className="col-location">
+                            {lead.location}
+                            {parsedCoords && (
+                              <a 
+                                href={`https://maps.google.com/?q=${parsedCoords.lat},${parsedCoords.lng}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="map-link-btn"
+                                title="View location on map"
+                              >
+                                <MapPin size={14} /> Map
+                              </a>
+                            )}
+                          </td>
+                          <td className="col-saree">{lead.saree_type || lead.sareeType}</td>
+                          <td className="col-photo">
+                            {sareePhoto ? (
+                              <button 
+                                type="button" 
+                                className="btn-saree-photo-thumb"
+                                onClick={() => setActivePhotoModal({
+                                  url: sareePhoto,
+                                  name: lead.name,
+                                  type: lead.saree_type || lead.sareeType
+                                })}
+                                title="Click to view full photo"
+                              >
+                                <img 
+                                  src={sareePhoto} 
+                                  alt="Saree thumbnail" 
+                                  className="saree-table-thumbnail"
+                                  onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.parentElement.innerHTML = '<span class="photo-badge-fallback">View Photo</span>';
+                                  }}
+                                />
+                                <span className="photo-view-text">View</span>
+                              </button>
+                            ) : (
+                              <span className="no-photo-badge">No photo</span>
+                            )}
+                          </td>
+                          <td className="col-time">{lead.pickup_time || lead.pickupTime}</td>
+                          <td className="col-status">
+                            <span className={`status-badge ${lead.status?.toLowerCase() || 'pending'}`}>
+                              {lead.status || 'Pending'}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* 2. Mobile Responsive Lead Cards (Screens <= 768px) */}
+              <div className="leads-mobile-card-list">
                 {filteredLeads.map((lead) => {
                   let parsedCoords = null;
                   if (lead.coordinates) {
@@ -204,81 +299,131 @@ export default function AdminDashboard() {
                   }
 
                   const sareePhoto = lead.sareeImageUrl || lead.saree_image_url;
+                  const rawPhone = lead.phone ? lead.phone.replace(/[^0-9]/g, '') : '';
+                  const cleanPhone = rawPhone.length === 10 ? `91${rawPhone}` : rawPhone;
 
                   return (
-                    <tr key={lead.id}>
-                      <td className="col-date">
-                        {new Date(lead.created_at || lead.createdAt).toLocaleDateString('en-IN', {
-                          day: '2-digit',
-                          month: 'short',
-                          year: 'numeric'
-                        })}<br/>
-                        <span className="lead-time">
-                          {new Date(lead.created_at || lead.createdAt).toLocaleTimeString('en-IN', {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </span>
-                      </td>
-                      <td className="col-name">{lead.name}</td>
-                      <td className="col-contact">
-                        <a href={`tel:${lead.phone}`} className="lead-link">
-                          <Phone size={14} /> {lead.phone}
-                        </a>
-                      </td>
-                      <td className="col-location">
-                        {lead.location}
-                        {parsedCoords && (
-                          <a 
-                            href={`https://maps.google.com/?q=${parsedCoords.lat},${parsedCoords.lng}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="map-link-btn"
-                            title="View location on map"
-                          >
-                            <MapPin size={14} /> Map
-                          </a>
-                        )}
-                      </td>
-                      <td className="col-saree">{lead.saree_type || lead.sareeType}</td>
-                      <td className="col-photo">
-                        {sareePhoto ? (
-                          <button 
-                            type="button" 
-                            className="btn-saree-photo-thumb"
-                            onClick={() => setActivePhotoModal({
-                              url: sareePhoto,
-                              name: lead.name,
-                              type: lead.saree_type || lead.sareeType
+                    <div className="mobile-lead-card" key={`mobile-card-${lead.id}`}>
+                      {/* Top Bar: Name, Status & Date */}
+                      <div className="mobile-card-top">
+                        <div className="mobile-card-title-group">
+                          <h3 className="mobile-lead-name">{lead.name}</h3>
+                          <span className="mobile-lead-timestamp">
+                            {new Date(lead.created_at || lead.createdAt).toLocaleDateString('en-IN', {
+                              day: '2-digit',
+                              month: 'short',
+                              year: 'numeric'
+                            })} • {new Date(lead.created_at || lead.createdAt).toLocaleTimeString('en-IN', {
+                              hour: '2-digit',
+                              minute: '2-digit'
                             })}
-                            title="Click to view full photo"
-                          >
-                            <img 
-                              src={sareePhoto} 
-                              alt="Saree thumbnail" 
-                              className="saree-table-thumbnail"
-                              onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.parentElement.innerHTML = '<span class="photo-badge-fallback">View Photo</span>';
-                              }}
-                            />
-                            <span className="photo-view-text">View</span>
-                          </button>
-                        ) : (
-                          <span className="no-photo-badge">No photo</span>
-                        )}
-                      </td>
-                      <td className="col-time">{lead.pickup_time || lead.pickupTime}</td>
-                      <td className="col-status">
+                          </span>
+                        </div>
                         <span className={`status-badge ${lead.status?.toLowerCase() || 'pending'}`}>
                           {lead.status || 'Pending'}
                         </span>
-                      </td>
-                    </tr>
+                      </div>
+
+                      {/* Info Rows */}
+                      <div className="mobile-card-rows">
+                        {/* Contact Action Row */}
+                        <div className="mobile-lead-row">
+                          <span className="mobile-row-label">Phone:</span>
+                          <div className="mobile-phone-group">
+                            <a href={`tel:${lead.phone}`} className="mobile-call-pill">
+                              <Phone size={13} /> {lead.phone}
+                            </a>
+                            {cleanPhone && (
+                              <a 
+                                href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=Hello%20${encodeURIComponent(lead.name)},%20regarding%20your%20old%20pattu%20saree%20pickup%20request%20with%20Arumugam%20Pattu%20Center...`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="mobile-whatsapp-pill"
+                                title="Chat on WhatsApp"
+                              >
+                                WhatsApp
+                              </a>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Location Row */}
+                        <div className="mobile-lead-row">
+                          <span className="mobile-row-label">Location:</span>
+                          <div className="mobile-location-wrapper">
+                            <span className="mobile-location-text">{lead.location}</span>
+                            {parsedCoords && (
+                              <a 
+                                href={`https://maps.google.com/?q=${parsedCoords.lat},${parsedCoords.lng}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="map-link-btn mobile-map-btn"
+                              >
+                                <MapPin size={13} /> Map
+                              </a>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Saree Details */}
+                        <div className="mobile-lead-row">
+                          <span className="mobile-row-label">Saree:</span>
+                          <span className="mobile-saree-val">{lead.saree_type || lead.sareeType}</span>
+                        </div>
+
+                        {/* Pickup Slot */}
+                        <div className="mobile-lead-row">
+                          <span className="mobile-row-label">Pickup:</span>
+                          <span className="mobile-pickup-val">{lead.pickup_time || lead.pickupTime}</span>
+                        </div>
+
+                        {/* Customer Notes */}
+                        {lead.notes && (
+                          <div className="mobile-lead-row notes-row">
+                            <span className="mobile-row-label">Notes:</span>
+                            <span className="mobile-notes-val">{lead.notes}</span>
+                          </div>
+                        )}
+
+                        {/* Photo Preview Button */}
+                        <div className="mobile-lead-row photo-row">
+                          <span className="mobile-row-label">Photo:</span>
+                          <div className="mobile-photo-cell">
+                            {sareePhoto ? (
+                              <button 
+                                type="button" 
+                                className="mobile-photo-card-btn"
+                                onClick={() => setActivePhotoModal({
+                                  url: sareePhoto,
+                                  name: lead.name,
+                                  type: lead.saree_type || lead.sareeType
+                                })}
+                              >
+                                <img 
+                                  src={sareePhoto} 
+                                  alt="Saree" 
+                                  className="mobile-card-img-thumb"
+                                  onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.style.display = 'none';
+                                  }}
+                                />
+                                <div className="mobile-photo-cta-text">
+                                  <ImageIcon size={14} />
+                                  <span>Tap to View Photo</span>
+                                </div>
+                              </button>
+                            ) : (
+                              <span className="no-photo-badge">No photo uploaded</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   );
                 })}
-              </tbody>
-            </table>
+              </div>
+            </>
           )}
         </div>
       </div>

@@ -371,45 +371,303 @@
   font-size: 0.9rem;
 }
 
-/* Responsive Table */
-@media (max-width: 900px) {
+/* ── Responsive View Switcher: Desktop Table vs Mobile Cards ── */
+.leads-mobile-card-list {
+  display: none;
+}
+
+.leads-table-container {
+  display: block;
+}
+
+/* Tablet Horizontal Scrolling */
+@media (min-width: 769px) and (max-width: 1024px) {
   .leads-table-container {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   .leads-table {
-    min-width: 800px;
+    min-width: 850px;
   }
 }
 
-@media (max-width: 600px) {
+/* ── Mobile Layout (< 768px): Card-based View ── */
+@media (max-width: 768px) {
   .admin-dashboard-panel {
-    padding: 24px 16px;
+    padding: 20px 14px 60px;
   }
 
   .admin-dashboard-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
   }
 
   .admin-dashboard-header h1 {
-    font-size: 1.5rem;
+    font-size: 1.45rem;
   }
 
+  .admin-dashboard-header p {
+    font-size: 0.85rem;
+  }
+
+  .admin-header-actions {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-refresh, .btn-logout {
+    flex: 1;
+    justify-content: center;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+
+  /* Toolbar */
   .admin-dashboard-toolbar {
     flex-direction: column;
     align-items: stretch;
-    padding: 16px;
+    padding: 14px;
+    gap: 12px;
+    margin-bottom: 18px;
   }
 
   .search-box-wrapper {
     max-width: none;
+    width: 100%;
+    min-width: unset;
+  }
+
+  .search-box-wrapper input {
+    font-size: 0.88rem;
+    padding: 11px 14px 11px 38px;
   }
 
   .filter-group-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
   }
+
+  .filter-group-wrapper select {
+    flex: 1;
+    max-width: 180px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Hide wide desktop table on mobile */
+  .leads-table-container {
+    display: none !important;
+  }
+
+  /* Show mobile card list */
+  .leads-mobile-card-list {
+    display: flex !important;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* Mobile Lead Card Styles */
+  .mobile-lead-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(63, 44, 95, 0.05);
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .mobile-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: #FAF8FE;
+    border-bottom: 1px solid #ECE7F6;
+    gap: 12px;
+  }
+
+  .mobile-card-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .mobile-lead-name {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    font-family: var(--font-heading);
+  }
+
+  .mobile-lead-timestamp {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+  }
+
+  .mobile-card-rows {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mobile-lead-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    font-size: 0.86rem;
+    gap: 8px;
+  }
+
+  .mobile-row-label {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    min-width: 65px;
+    padding-top: 2px;
+  }
+
+  .mobile-phone-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .mobile-call-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #F4EFFF;
+    color: var(--primary-color);
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.84rem;
+    text-decoration: none;
+    border: 1px solid #D6CBEC;
+  }
+
+  .mobile-whatsapp-pill {
+    display: inline-flex;
+    align-items: center;
+    background: #25D366;
+    color: #ffffff;
+    padding: 5px 9px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.76rem;
+    text-decoration: none;
+    box-shadow: 0 1px 4px rgba(37, 211, 102, 0.3);
+  }
+
+  .mobile-whatsapp-pill:hover,
+  .mobile-whatsapp-pill:active {
+    background: #1EBE5D;
+  }
+
+  .mobile-location-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .mobile-location-text {
+    color: var(--text-dark);
+    font-weight: 500;
+    font-size: 0.85rem;
+  }
+
+  .mobile-map-btn {
+    margin-left: 0;
+    padding: 3px 7px;
+    font-size: 0.72rem;
+  }
+
+  .mobile-saree-val {
+    font-weight: 600;
+    color: var(--primary-color-dark);
+    text-align: right;
+  }
+
+  .mobile-pickup-val {
+    color: var(--text-dark);
+    text-align: right;
+    font-size: 0.84rem;
+  }
+
+  .notes-row {
+    background: #FAF8FE;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ECE7F6;
+    margin-top: 2px;
+  }
+
+  .mobile-notes-val {
+    font-size: 0.82rem;
+    color: var(--text-dark);
+    line-height: 1.4;
+  }
+
+  .photo-row {
+    padding-top: 6px;
+    border-top: 1px dashed #ECE7F6;
+    align-items: center;
+  }
+
+  .mobile-photo-cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .mobile-photo-card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #F4EFFF;
+    border: 1px solid #D6CBEC;
+    border-radius: 8px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .mobile-photo-card-btn:active {
+    background: #EAE1FB;
+  }
+
+  .mobile-card-img-thumb {
+    width: 34px;
+    height: 34px;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+
+  .mobile-photo-cta-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #5B3E96;
+  }
 }
+
 
 /* Saree Photo in Leads Table */
 .col-photo {
@@ -608,5 +866,23 @@
   font-weight: 500;
 }
 
+@media (max-width: 600px) {
+  .admin-photo-modal-backdrop {
+    padding: 12px;
+  }
 
+  .admin-modal-top-bar {
+    padding: 10px 14px;
+  }
 
+  .admin-modal-image-box {
+    padding: 8px;
+    min-height: 200px;
+    max-height: 60vh;
+  }
+
+  .btn-modal-action {
+    padding: 5px 8px;
+    font-size: 0.74rem;
+  }
+}
