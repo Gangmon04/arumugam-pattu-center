@@ -213,7 +213,7 @@
 
 .search-box-wrapper input {
   width: 100%;
-  padding: 10px 16px 10px 42px;
+  padding: 10px 38px 10px 42px;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   outline: none;
@@ -223,6 +223,45 @@
 
 .search-box-wrapper input:focus {
   border-color: var(--primary-color);
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+}
+
+.search-clear-btn:hover {
+  background: var(--bg-alt);
+  color: var(--text-dark);
+}
+
+.toolbar-right-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.leads-count-badge {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6B46C1;
+  background: #F4EFFF;
+  border: 1px solid #D6CBEC;
+  padding: 5px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
 }
 
 .filter-group-wrapper {
@@ -247,6 +286,7 @@
   cursor: pointer;
   outline: none;
 }
+
 
 /* Leads Table Styles */
 .leads-table-container {
@@ -349,6 +389,57 @@
   color: #059669;
 }
 
+/* Status Badge Interactive Button */
+.status-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  outline: none;
+}
+
+.status-badge-btn.pending {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+.status-badge-btn.pending:hover {
+  background: #fde68a;
+  border-color: #d97706;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.2);
+}
+
+.status-badge-btn.completed {
+  background: #d1fae5;
+  color: #047857;
+  border-color: #a7f3d0;
+}
+
+.status-badge-btn.completed:hover {
+  background: #a7f3d0;
+  border-color: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.2);
+}
+
+.status-badge-btn:disabled,
+.status-updating {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+
 /* Empty State */
 .no-leads-state {
   padding: 60px 24px;
@@ -443,22 +534,34 @@
 
   .search-box-wrapper input {
     font-size: 0.88rem;
-    padding: 11px 14px 11px 38px;
+    padding: 11px 36px 11px 38px;
   }
 
-  .filter-group-wrapper {
+  .toolbar-right-controls {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
+  }
+
+  .leads-count-badge {
+    font-size: 0.78rem;
+    padding: 4px 10px;
+  }
+
+  .filter-group-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   .filter-group-wrapper select {
-    flex: 1;
-    max-width: 180px;
-    padding: 8px 12px;
-    font-size: 0.85rem;
+    padding: 7px 10px;
+    font-size: 0.84rem;
+    max-width: 140px;
   }
+
 
   /* Hide wide desktop table on mobile */
   .leads-table-container {

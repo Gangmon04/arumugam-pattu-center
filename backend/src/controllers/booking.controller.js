@@ -2,6 +2,7 @@ import {
   createBookingService,
   getAllBookingsService,
   uploadBookingPhotoService,
+  updateBookingStatusService,
 } from "../services/booking.service.js";
 
 export const createBooking = async (req, res, next) => {
@@ -61,3 +62,21 @@ export const uploadBookingPhoto = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateBookingStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const result = await updateBookingStatusService(id, status);
+
+    res.status(200).json({
+      success: true,
+      message: "Booking status updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+

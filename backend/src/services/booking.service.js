@@ -196,3 +196,31 @@ export const uploadBookingPhotoService = async (bookingId, fileBuffer) => {
     };
   }
 };
+
+export const updateBookingStatusService = async (bookingId, status) => {
+  const enquiryId = Number(bookingId);
+  const cleanStatus = status?.toUpperCase() === 'COMPLETED' ? 'COMPLETED' : 'PENDING';
+
+  try {
+    const updatedEnquiry = await prisma.enquiry.update({
+      where: { id: enquiryId },
+      data: { status: cleanStatus },
+    });
+
+    return {
+      id: updatedEnquiry.id,
+      status: updatedEnquiry.status,
+    };
+  } catch (dbError) {
+    console.warn('Database status update fallback:', dbError.message);
+    const inMem = localBookingsStore.find((b) => b.id === enquiryId);
+    if (inMem) {
+      inMem.status = cleanStatus;
+    }
+    return {
+      id: enquiryId,
+      status: cleanStatus,
+    };
+  }
+};
+

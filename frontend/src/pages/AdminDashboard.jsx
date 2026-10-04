@@ -77,14 +77,67 @@ export default function AdminDashboard() {
     setLeads([]);
   };
 
-  // Filter leads based on query and status selection
+  const [updatingId, setUpdatingId] = useState(null);
+
+  const handleToggleStatus = async (leadId, currentStatus) => {
+    const isCurrentlyPending = (currentStatus || 'PENDING').toUpperCase() === 'PENDING';
+    const newStatus = isCurrentlyPending ? 'COMPLETED' : 'PENDING';
+
+    setUpdatingId(leadId);
+
+    // Optimistic UI update
+    setLeads(prevLeads =>
+      prevLeads.map(lead => (lead.id === leadId ? { ...lead, status: newStatus } : lead))
+    );
+
+    try {
+      const res = await fetch(`/api/bookings/${leadId}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      if (!res.ok) {
+        console.warn('Status update not persisted to remote server');
+      }
+    } catch (err) {
+      console.error('Error updating booking status:', err);
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  // Filter leads based on search query across all fields and case-insensitive status
   const filteredLeads = leads.filter(lead => {
-    const matchesSearch = 
-      lead.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      lead.phone?.includes(searchQuery) ||
-      lead.location?.toLowerCase().includes(searchQuery.toLowerCase());
+    const query = searchQuery.trim().toLowerCase();
     
-    const matchesStatus = statusFilter === 'All' || lead.status === statusFilter;
+    // 1. Search Query matching across name, phone, clean phone, location, saree, pickup, notes, and ID
+    let matchesSearch = true;
+    if (query) {
+      const name = (lead.name || '').toLowerCase();
+      const phone = (lead.phone || '').toLowerCase();
+      const cleanPhone = phone.replace(/[^0-9]/g, '');
+      const cleanQuery = query.replace(/[^0-9]/g, '');
+      const location = (lead.location || '').toLowerCase();
+      const saree = (lead.saree_type || lead.sareeType || '').toLowerCase();
+      const pickup = (lead.pickup_time || lead.pickupTime || '').toLowerCase();
+      const notes = (lead.notes || '').toLowerCase();
+      const id = String(lead.id || '');
+
+      matchesSearch = 
+        name.includes(query) ||
+        phone.includes(query) ||
+        (cleanQuery && cleanPhone.includes(cleanQuery)) ||
+        location.includes(query) ||
+        saree.includes(query) ||
+        pickup.includes(query) ||
+        notes.includes(query) ||
+        id === query;
+    }
+    
+    // 2. Status Filter matching (case-insensitive)
+    const leadStatus = (lead.status || 'PENDING').toUpperCase();
+    const filterStatus = statusFilter.toUpperCase();
+    const matchesStatus = filterStatus === 'ALL' || leadStatus === filterStatus;
     
     return matchesSearch && matchesStatus;
   });
@@ -152,19 +205,40 @@ export default function AdminDashboard() {
             <Search size={18} className="search-icon-field" />
             <input 
               type="text" 
-              placeholder="Search by name, phone, or area..."
+              placeholder="Search name, phone, saree, location..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
+            {searchQuery && (
+              <button 
+                type="button" 
+                className="search-clear-btn" 
+                onClick={() => setSearchQuery('')}
+                title="Clear search"
+                aria-label="Clear search"
+              >
+                <X size={15} />
+              </button>
+            )}
           </div>
 
-          <div className="filter-group-wrapper">
-            <label>Status:</label>
-            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-              <option value="All">All Leads</option>
-              <option value="Pending">Pending</option>
-              <option value="Completed">Completed</option>
-            </select>
+          <div className="toolbar-right-controls">
+            <span className="leads-count-badge">
+              {filteredLeads.length} {filteredLeads.length === 1 ? 'lead' : 'leads'}
+            </span>
+
+            <div className="filter-group-wrapper">
+              <label htmlFor="admin-status-filter">Status:</label>
+              <select 
+                id="admin-status-filter"
+                value={statusFilter} 
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option value="All">All Leads</option>
+                <option value="Pending">Pending</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -273,9 +347,15 @@ export default function AdminDashboard() {
                           </td>
                           <td className="col-time">{lead.pickup_time || lead.pickupTime}</td>
                           <td className="col-status">
-                            <span className={`status-badge ${lead.status?.toLowerCase() || 'pending'}`}>
+                            <button
+                              type="button"
+                              className={`status-badge-btn ${lead.status?.toLowerCase() || 'pending'} ${updatingId === lead.id ? 'status-updating' : ''}`}
+                              onClick={() => handleToggleStatus(lead.id, lead.status)}
+                              title={`Click to mark as ${(lead.status || 'PENDING').toUpperCase() === 'PENDING' ? 'COMPLETED' : 'PENDING'}`}
+                              disabled={updatingId === lead.id}
+                            >
                               {lead.status || 'Pending'}
-                            </span>
+                            </button>
                           </td>
                         </tr>
                       );
@@ -319,9 +399,15 @@ export default function AdminDashboard() {
                             })}
                           </span>
                         </div>
-                        <span className={`status-badge ${lead.status?.toLowerCase() || 'pending'}`}>
+                        <button
+                          type="button"
+                          className={`status-badge-btn ${lead.status?.toLowerCase() || 'pending'} ${updatingId === lead.id ? 'status-updating' : ''}`}
+                          onClick={() => handleToggleStatus(lead.id, lead.status)}
+                          title={`Click to mark as ${(lead.status || 'PENDING').toUpperCase() === 'PENDING' ? 'COMPLETED' : 'PENDING'}`}
+                          disabled={updatingId === lead.id}
+                        >
                           {lead.status || 'Pending'}
-                        </span>
+                        </button>
                       </div>
 
                       {/* Info Rows */}
