@@ -350,6 +350,39 @@
   text-decoration: underline;
 }
 
+.desktop-contact-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.whatsapp-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #25D366;
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 2px 5px rgba(37, 211, 102, 0.35);
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  flex-shrink: 0;
+}
+
+.whatsapp-icon-btn:hover {
+  background: #1EBE5D;
+  transform: scale(1.1);
+  box-shadow: 0 3px 8px rgba(37, 211, 102, 0.45);
+  color: #ffffff;
+}
+
+.whatsapp-icon-btn:active {
+  transform: scale(0.92);
+}
+
+
 .map-link-btn {
   display: inline-flex;
   align-items: center;
@@ -661,25 +694,8 @@
     border: 1px solid #D6CBEC;
   }
 
-  .mobile-whatsapp-pill {
-    display: inline-flex;
-    align-items: center;
-    background: #25D366;
-    color: #ffffff;
-    padding: 5px 9px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.76rem;
-    text-decoration: none;
-    box-shadow: 0 1px 4px rgba(37, 211, 102, 0.3);
-  }
-
-  .mobile-whatsapp-pill:hover,
-  .mobile-whatsapp-pill:active {
-    background: #1EBE5D;
-  }
-
   .mobile-location-wrapper {
+
     display: flex;
     align-items: center;
     gap: 6px;
