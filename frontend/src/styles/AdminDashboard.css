@@ -572,4 +572,26 @@
   to { opacity: 1; }
 }
 
+/* ── Minimal Admin Portal Footers ─────────────────────── */
+.admin-portal-footer-note {
+  margin-top: 24px;
+  font-size: 0.8rem;
+  color: #8C7B9E;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.admin-portal-minimal-footer {
+  margin-top: auto;
+  padding: 24px 20px;
+  text-align: center;
+  border-top: 1px solid #ECE7F6;
+  background: #ffffff;
+  color: #8C7B9E;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+
 

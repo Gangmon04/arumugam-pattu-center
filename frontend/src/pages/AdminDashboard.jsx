@@ -13,7 +13,6 @@ import {
   Image as ImageIcon 
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import '../styles/AdminDashboard.css';
 
 export default function AdminDashboard() {
@@ -119,8 +118,8 @@ export default function AdminDashboard() {
               </button>
             </form>
           </div>
+          <p className="admin-portal-footer-note">Arumugam Pattu Center • Admin Management Portal</p>
         </div>
-        <Footer />
       </div>
     );
   }
@@ -322,7 +321,10 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      <Footer />
+      {/* Minimal Clean Admin Footer */}
+      <footer className="admin-portal-minimal-footer">
+        <span>© {new Date().getFullYear()} Arumugam Pattu Center • Admin Management Portal</span>
+      </footer>
     </div>
   );
 }
