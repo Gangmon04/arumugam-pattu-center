@@ -18,7 +18,11 @@ import {
   EyeOff,
   User,
   ChevronDown,
-  Check
+  Check,
+  BarChart3,
+  Users,
+  ShieldCheck,
+  ArrowRight
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import '../styles/AdminDashboard.css';
@@ -249,68 +253,175 @@ export default function AdminDashboard() {
   // Login Screen
   if (!isAuthenticated) {
     return (
-      <div className="app-container admin-page-wrapper">
-        <Navbar />
-        <div className="admin-login-container">
-          <div className="admin-login-card">
-            <div className="admin-login-icon-wrapper">
-              <ShieldAlert size={48} />
-            </div>
-            <h2>Admin Portal</h2>
-            <p>Access restricted. Please sign in with your administrator account to view customer leads.</p>
-            
-            <form onSubmit={handleLogin} className="admin-login-form">
-              <div className="admin-login-field-group">
-                <label htmlFor="admin-email" className="login-field-label">Email Address</label>
-                <div className="input-with-icon">
-                  <Mail size={17} className="input-field-icon" />
-                  <input 
-                    id="admin-email"
-                    type="email" 
-                    placeholder="name@example.com" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="email"
-                    required 
-                  />
+      <div className="admin-portal-login-screen">
+        <div className="admin-portal-login-backdrop">
+          {/* Subtle Top Navigation to Website */}
+          <header className="admin-portal-top-bar">
+            <a href="/" className="admin-portal-back-link" title="Return to home page">
+              <ArrowRight size={14} className="back-link-arrow" /> Back to Website
+            </a>
+          </header>
+
+          <main className="admin-portal-login-container">
+            <div className="admin-portal-layout">
+              {/* Left Column: Brand & Features Overview */}
+              <div className="admin-portal-info-col">
+                <div className="admin-portal-brand-block">
+                  <div className="admin-portal-logo-wrapper">
+                    <img 
+                      src="/assets/images/logo.png" 
+                      alt="Arumugam Pattu Center Logo" 
+                      className="admin-portal-logo-img" 
+                    />
+                  </div>
+                  <div className="admin-portal-tagline">TRUSTED SAREE BUYING PARTNER</div>
+                  <h1 className="admin-portal-hero-title">Admin Portal</h1>
+                  <p className="admin-portal-hero-desc">
+                    Access your administrator account to manage bookings, customers, enquiries and saree photos securely.
+                  </p>
+                </div>
+
+                <div className="admin-portal-features-list">
+                  <div className="admin-portal-feature-item">
+                    <div className="admin-portal-feature-icon">
+                      <ShieldCheck size={20} />
+                    </div>
+                    <div className="admin-portal-feature-text">
+                      <span className="feature-title">Secure Access</span>
+                      <span className="feature-desc">Protected administrator login</span>
+                    </div>
+                  </div>
+
+                  <div className="admin-portal-feature-item">
+                    <div className="admin-portal-feature-icon">
+                      <BarChart3 size={20} />
+                    </div>
+                    <div className="admin-portal-feature-text">
+                      <span className="feature-title">Manage Bookings</span>
+                      <span className="feature-desc">View and update customer bookings</span>
+                    </div>
+                  </div>
+
+                  <div className="admin-portal-feature-item">
+                    <div className="admin-portal-feature-icon">
+                      <Users size={20} />
+                    </div>
+                    <div className="admin-portal-feature-text">
+                      <span className="feature-title">Track Enquiries</span>
+                      <span className="feature-desc">Monitor enquiries and leads</span>
+                    </div>
+                  </div>
+
+                  <div className="admin-portal-feature-item">
+                    <div className="admin-portal-feature-icon">
+                      <ImageIcon size={20} />
+                    </div>
+                    <div className="admin-portal-feature-text">
+                      <span className="feature-title">Manage Saree Photos</span>
+                      <span className="feature-desc">View uploaded saree photos</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="admin-login-field-group">
-                <label htmlFor="admin-password" className="login-field-label">Password</label>
-                <div className="input-with-icon">
-                  <Lock size={17} className="input-field-icon" />
-                  <input 
-                    id="admin-password"
-                    type={showPassword ? "text" : "password"} 
-                    placeholder="Enter your password" 
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="current-password"
-                    required 
-                  />
-                  <button 
-                    type="button" 
-                    className="btn-toggle-password" 
-                    onClick={() => setShowPassword(!showPassword)}
-                    tabIndex={-1}
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                  >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
+              {/* Right Column: Floating Luxury Login Card */}
+              <div className="admin-portal-card-col">
+                <div className="admin-luxury-card">
+                  <div className="admin-luxury-lock-bubble">
+                    <ShieldCheck size={26} />
+                  </div>
+                  
+                  <h2 className="admin-luxury-card-title">Admin Login</h2>
+                  <p className="admin-luxury-card-subtitle">Sign in with your administrator account</p>
+
+                  <form onSubmit={handleLogin} className="admin-luxury-form">
+                    <div className="luxury-field-group">
+                      <label htmlFor="admin-email" className="luxury-field-label">Email Address</label>
+                      <div className="luxury-input-wrapper">
+                        <Mail size={17} className="luxury-input-icon" />
+                        <input 
+                          id="admin-email"
+                          type="email" 
+                          placeholder="name@example.com" 
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          autoComplete="email"
+                          required 
+                        />
+                      </div>
+                    </div>
+
+                    <div className="luxury-field-group">
+                      <label htmlFor="admin-password" className="luxury-field-label">Password</label>
+                      <div className="luxury-input-wrapper">
+                        <Lock size={17} className="luxury-input-icon" />
+                        <input 
+                          id="admin-password"
+                          type={showPassword ? "text" : "password"} 
+                          placeholder="Enter your password" 
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          autoComplete="current-password"
+                          required 
+                        />
+                        <button 
+                          type="button" 
+                          className="btn-toggle-luxury-pwd" 
+                          onClick={() => setShowPassword(!showPassword)}
+                          tabIndex={-1}
+                          aria-label={showPassword ? "Hide password" : "Show password"}
+                        >
+                          {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="admin-luxury-forgot-row">
+                      <a 
+                        href="#forgot" 
+                        onClick={(e) => { 
+                          e.preventDefault(); 
+                          alert('For password reset assistance, please contact the system administrator directly.'); 
+                        }}
+                        className="admin-luxury-forgot-link"
+                      >
+                        Forgot password?
+                      </a>
+                    </div>
+
+                    {error && (
+                      <div className="admin-luxury-error-alert">
+                        <AlertCircle size={15} /> 
+                        <span>{error}</span>
+                      </div>
+                    )}
+
+                    <button type="submit" className="btn-luxury-signin" disabled={loading}>
+                      {loading ? 'Authenticating...' : (
+                        <>
+                          <LogIn size={18} /> Sign In
+                        </>
+                      )}
+                    </button>
+                  </form>
+
+                  <div className="admin-luxury-divider">
+                    <span>or</span>
+                  </div>
+
+                  <div className="admin-luxury-footer-brand">
+                    <div className="admin-luxury-footer-name">Arumugam Pattu Center</div>
+                    <div className="admin-luxury-footer-tagline">SELL OLD PATTU SAREES • SECURE MANAGEMENT</div>
+                    <div className="admin-luxury-footer-motif">
+                      <span className="motif-bar"></span>
+                      <span className="motif-diamond">✦</span>
+                      <span className="motif-bar"></span>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              {error && <span className="login-error-text"><AlertCircle size={14} /> {error}</span>}
-              <button type="submit" className="btn-admin-login" disabled={loading}>
-                {loading ? 'Authenticating...' : <><LogIn size={18} /> Sign In</>}
-              </button>
-            </form>
-
-            <div className="admin-card-footer-badge">
-              Arumugam Pattu Center • Secure Management
             </div>
-          </div>
+          </main>
         </div>
       </div>
     );
