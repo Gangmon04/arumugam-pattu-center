@@ -202,24 +202,14 @@
   }
 
   /* Coverage map + locations */
-  .coverage-content {
+  .coverage-branch-meta {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    gap: 10px;
   }
 
-  .map-img {
-    width: 100%;
-    max-width: 320px;
-  }
-
-  .coverage-locations-row {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .loc-chip-large {
-    max-width: 160px;
-    font-size: 0.9rem;
+  .coverage-map-frame-wrapper {
+    height: 190px;
   }
 
   /* --- Booking form --- */

@@ -78,20 +78,10 @@
   flex-shrink: 0;
 }
 
-.author-info {
-  display: flex;
-  flex-direction: column;
-}
-
 .author-name {
   font-weight: 600;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   color: var(--text-dark);
-}
-
-.author-badge {
-  font-size: 0.75rem;
-  color: var(--text-muted);
 }
 
 .nav-arrow {

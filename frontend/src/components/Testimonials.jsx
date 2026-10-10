@@ -108,10 +108,7 @@ export default function Testimonials() {
               <p className="review-text">"{r.review}"</p>
               <div className="review-author">
                 <img src={r.avatar} alt={r.name} className="author-avatar" />
-                <div className="author-info">
-                  <span className="author-name">{r.name}</span>
-                  <span className="author-badge">{r.badge}</span>
-                </div>
+                <span className="author-name">{r.name}</span>
               </div>
             </div>
           ))}

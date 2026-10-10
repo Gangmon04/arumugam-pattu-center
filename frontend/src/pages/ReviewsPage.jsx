@@ -135,18 +135,11 @@ export default function ReviewsPage() {
               <p className="reviews-card-text">
                 {r.review}
               </p>
-              
-              <div className="reviews-card-image-box">
-                <img src={r.image} alt="Saree preview" className="reviews-card-image" />
-              </div>
 
               <div className="reviews-card-footer">
                 <div className="reviews-card-author-box">
                   <img src={r.avatar} alt={r.name} className="reviews-card-avatar" />
-                  <div className="reviews-card-author-info">
-                    <span className="reviews-card-author-name">{r.name}</span>
-                    {r.badge && <span className="reviews-card-author-badge">{r.badge}</span>}
-                  </div>
+                  <span className="reviews-card-author-name">{r.name}</span>
                 </div>
                 <Quote size={20} color="var(--primary-color)" className="reviews-card-quote-icon" />
               </div>
@@ -178,8 +171,14 @@ export default function ReviewsPage() {
         </div>
 
         {/* Google Rating */}
-        <div className="google-rating-banner">
-          
+        <a 
+          href={siteData.googleReviews || siteData.locations[0].mapLink}
+          target="_blank"
+          rel="noreferrer"
+          className="google-rating-banner"
+          title="Open Arumugam Pattu Centre on Google Reviews"
+          style={{ textDecoration: 'none', color: 'inherit', display: 'flex' }}
+        >
           <img src="/assets/icons/wreath_left_exact.jpg" alt="Wreath Left" className="google-rating-wreath" />
 
           <div className="google-rating-center">
@@ -202,12 +201,11 @@ export default function ReviewsPage() {
               ))}
             </div>
             
-            <span className="google-rating-subtitle">Based on 1,200+ reviews</span>
+            <span className="google-rating-subtitle">Based on 1,200+ reviews · Click to view</span>
           </div>
 
           <img src="/assets/icons/wreath_left_highres.png" alt="Wreath Right" className="google-rating-wreath" />
-
-        </div>
+        </a>
       </div>
 
       <Footer />
