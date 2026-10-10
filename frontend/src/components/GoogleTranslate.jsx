@@ -1,92 +1,43 @@
 import { useState, useEffect, useRef } from 'react';
-import { Globe, ChevronDown, Check, Search, ArrowLeft, X } from 'lucide-react';
+import { Globe, ChevronDown, Check, Search, X } from 'lucide-react';
 
-// Crisp circular UK Flag
-const UKFlag = () => (
-  <svg width="22" height="22" viewBox="0 0 32 32" className="flag-svg" aria-hidden="true">
-    <clipPath id="circle-clip-uk">
-      <circle cx="16" cy="16" r="16" />
-    </clipPath>
-    <g clipPath="url(#circle-clip-uk)">
-      <rect width="32" height="32" fill="#012169" />
-      <path d="M0,0 L32,32 M32,0 L0,32" stroke="#FFFFFF" strokeWidth="5.5" />
-      <path d="M0,0 L32,32 M32,0 L0,32" stroke="#C8102E" strokeWidth="3" />
-      <path d="M16,0 V32 M0,16 H32" stroke="#FFFFFF" strokeWidth="8" />
-      <path d="M16,0 V32 M0,16 H32" stroke="#C8102E" strokeWidth="4.8" />
-    </g>
-  </svg>
-);
-
-// Crisp circular India Flag
-const IndiaFlag = () => (
-  <svg width="22" height="22" viewBox="0 0 32 32" className="flag-svg" aria-hidden="true">
-    <clipPath id="circle-clip-in">
-      <circle cx="16" cy="16" r="16" />
-    </clipPath>
-    <g clipPath="url(#circle-clip-in)">
-      <rect width="32" height="10.66" y="0" fill="#FF9933" />
-      <rect width="32" height="10.66" y="10.66" fill="#FFFFFF" />
-      <rect width="32" height="10.66" y="21.33" fill="#138808" />
-      <circle cx="16" cy="16" r="3.2" fill="none" stroke="#000080" strokeWidth="0.8" />
-      <circle cx="16" cy="16" r="0.8" fill="#000080" />
-    </g>
-  </svg>
-);
-
-// Circular World/International Badge
-const GlobeBadge = () => (
-  <span className="flag-circle-globe" aria-hidden="true">
-    <Globe size={13} />
-  </span>
-);
-
-// Top featured languages
-const TOP_LANGUAGES = [
-  { code: 'en', label: 'English', short: 'EN', flag: UKFlag },
-  { code: 'ta', label: 'தமிழ் (Tamil)', short: 'TA', flag: IndiaFlag },
-  { code: 'hi', label: 'हिंदी (Hindi)', short: 'HI', flag: IndiaFlag },
-  { code: 'te', label: 'తెలుగు (Telugu)', short: 'TE', flag: IndiaFlag },
+const PRIMARY_LANGUAGES = [
+  { code: 'en', label: 'English', short: 'EN' },
+  { code: 'ta', label: 'தமிழ் (Tamil)', short: 'TA' },
 ];
 
-// Full catalog of supported languages
-const ALL_LANGUAGES = [
-  // Primary Indian Regional Languages
-  { code: 'en', label: 'English', native: 'English', short: 'EN', flag: UKFlag },
-  { code: 'ta', label: 'Tamil', native: 'தமிழ்', short: 'TA', flag: IndiaFlag },
-  { code: 'hi', label: 'Hindi', native: 'हिंदी', short: 'HI', flag: IndiaFlag },
-  { code: 'te', label: 'Telugu', native: 'తెలుగు', short: 'TE', flag: IndiaFlag },
-  { code: 'kn', label: 'Kannada', native: 'ಕನ್ನಡ', short: 'KN', flag: IndiaFlag },
-  { code: 'ml', label: 'Malayalam', native: 'മലയാളം', short: 'ML', flag: IndiaFlag },
-  { code: 'mr', label: 'Marathi', native: 'मराठी', short: 'MR', flag: IndiaFlag },
-  { code: 'bn', label: 'Bengali', native: 'বাংলা', short: 'BN', flag: IndiaFlag },
-  { code: 'gu', label: 'Gujarati', native: 'ગુજરાતી', short: 'GU', flag: IndiaFlag },
-  { code: 'pa', label: 'Punjabi', native: 'ਪੰਜਾਬੀ', short: 'PA', flag: IndiaFlag },
-  { code: 'ur', label: 'Urdu', native: 'اردو', short: 'UR', flag: IndiaFlag },
-  { code: 'or', label: 'Odia', native: 'ଓଡ଼ିଆ', short: 'OR', flag: IndiaFlag },
-
-  // International Languages
-  { code: 'ar', label: 'Arabic', native: 'العربية', short: 'AR', flag: GlobeBadge },
-  { code: 'fr', label: 'French', native: 'Français', short: 'FR', flag: GlobeBadge },
-  { code: 'de', label: 'German', native: 'Deutsch', short: 'DE', flag: GlobeBadge },
-  { code: 'es', label: 'Spanish', native: 'Español', short: 'ES', flag: GlobeBadge },
-  { code: 'it', label: 'Italian', native: 'Italiano', short: 'IT', flag: GlobeBadge },
-  { code: 'pt', label: 'Portuguese', native: 'Português', short: 'PT', flag: GlobeBadge },
-  { code: 'ru', label: 'Russian', native: 'Русский', short: 'RU', flag: GlobeBadge },
-  { code: 'zh-CN', label: 'Chinese (Simplified)', native: '简体中文', short: 'ZH', flag: GlobeBadge },
-  { code: 'ja', label: 'Japanese', native: '日本語', short: 'JA', flag: GlobeBadge },
-  { code: 'ko', label: 'Korean', native: '한국어', short: 'KO', flag: GlobeBadge },
-  { code: 'ms', label: 'Malay', native: 'Bahasa Melayu', short: 'MS', flag: GlobeBadge },
-  { code: 'id', label: 'Indonesian', native: 'Bahasa Indonesia', short: 'ID', flag: GlobeBadge },
-  { code: 'th', label: 'Thai', native: 'ไทย', short: 'TH', flag: GlobeBadge },
-  { code: 'vi', label: 'Vietnamese', native: 'Tiếng Việt', short: 'VI', flag: GlobeBadge },
-  { code: 'tr', label: 'Turkish', native: 'Türkçe', short: 'TR', flag: GlobeBadge },
-  { code: 'nl', label: 'Dutch', native: 'Nederlands', short: 'NL', flag: GlobeBadge },
+const OTHER_LANGUAGES = [
+  { code: 'hi', label: 'Hindi (हिंदी)', short: 'HI' },
+  { code: 'te', label: 'Telugu (తెలుగు)', short: 'TE' },
+  { code: 'kn', label: 'Kannada (ಕನ್ನಡ)', short: 'KN' },
+  { code: 'ml', label: 'Malayalam (മലയാളം)', short: 'ML' },
+  { code: 'mr', label: 'Marathi (मराठी)', short: 'MR' },
+  { code: 'bn', label: 'Bengali (বাংলা)', short: 'BN' },
+  { code: 'gu', label: 'Gujarati (ગુજરાતી)', short: 'GU' },
+  { code: 'pa', label: 'Punjabi (ਪੰਜਾਬੀ)', short: 'PA' },
+  { code: 'ur', label: 'Urdu (اردو)', short: 'UR' },
+  { code: 'or', label: 'Odia (ଓଡ଼ିଆ)', short: 'OR' },
+  { code: 'ar', label: 'Arabic (العربية)', short: 'AR' },
+  { code: 'fr', label: 'French (Français)', short: 'FR' },
+  { code: 'de', label: 'German (Deutsch)', short: 'DE' },
+  { code: 'es', label: 'Spanish (Español)', short: 'ES' },
+  { code: 'it', label: 'Italian (Italiano)', short: 'IT' },
+  { code: 'pt', label: 'Portuguese (Português)', short: 'PT' },
+  { code: 'ru', label: 'Russian (Русский)', short: 'RU' },
+  { code: 'zh-CN', label: 'Chinese (Simplified)', short: 'ZH' },
+  { code: 'ja', label: 'Japanese (日本語)', short: 'JA' },
+  { code: 'ko', label: 'Korean (한국어)', short: 'KO' },
+  { code: 'ms', label: 'Malay (Bahasa Melayu)', short: 'MS' },
+  { code: 'id', label: 'Indonesian (Bahasa Indonesia)', short: 'ID' },
+  { code: 'th', label: 'Thai (ไทย)', short: 'TH' },
+  { code: 'vi', label: 'Vietnamese (Tiếng Việt)', short: 'VI' },
+  { code: 'tr', label: 'Turkish (Türkçe)', short: 'TR' },
+  { code: 'nl', label: 'Dutch (Nederlands)', short: 'NL' },
 ];
 
 export default function GoogleTranslate() {
   const [currentLang, setCurrentLang] = useState('en');
   const [isOpen, setIsOpen] = useState(false);
-  const [showAllLanguages, setShowAllLanguages] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef(null);
 
@@ -95,7 +46,6 @@ export default function GoogleTranslate() {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
-        setShowAllLanguages(false);
         setSearchQuery('');
       }
     };
@@ -181,7 +131,6 @@ export default function GoogleTranslate() {
   const handleSelectLanguage = (langCode) => {
     setCurrentLang(langCode);
     setIsOpen(false);
-    setShowAllLanguages(false);
     setSearchQuery('');
     localStorage.setItem('preferred_lang', langCode);
 
@@ -200,33 +149,31 @@ export default function GoogleTranslate() {
     }
   };
 
-  const activeOption = ALL_LANGUAGES.find((l) => l.code === currentLang) || 
-                       TOP_LANGUAGES.find((l) => l.code === currentLang) || 
-                       TOP_LANGUAGES[0];
+  // Find active language display label
+  const allKnown = [...PRIMARY_LANGUAGES, ...OTHER_LANGUAGES];
+  const activeOption = allKnown.find((l) => l.code === currentLang) || PRIMARY_LANGUAGES[0];
 
-  // Filter languages in full search view
-  const filteredLanguages = ALL_LANGUAGES.filter((l) => {
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return true;
-    return (
-      l.label.toLowerCase().includes(q) ||
-      (l.native && l.native.toLowerCase().includes(q)) ||
-      l.code.toLowerCase().includes(q)
-    );
-  });
+  // If active language is from other languages, include it in the top list so it can be unselected
+  const isOtherActive = !PRIMARY_LANGUAGES.some((l) => l.code === currentLang);
+  const activeOtherLang = isOtherActive ? OTHER_LANGUAGES.find((l) => l.code === currentLang) : null;
+
+  // Filter other languages in search box
+  const searchResults = searchQuery.trim()
+    ? OTHER_LANGUAGES.filter((l) =>
+        l.label.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
+        l.code.toLowerCase().includes(searchQuery.trim().toLowerCase())
+      )
+    : [];
 
   return (
     <div className="nav-lang-custom-picker" ref={dropdownRef}>
-      {/* Trigger Button in Navbar (e.g. 🌐 EN ⌵) */}
+      {/* Trigger Button in Navbar (e.g. 🌐 EN ⌵ or 🌐 TA ⌵) */}
       <button 
         type="button"
         className={`btn-lang-trigger ${isOpen ? 'open' : ''}`}
         onClick={() => {
           setIsOpen(!isOpen);
-          if (isOpen) {
-            setShowAllLanguages(false);
-            setSearchQuery('');
-          }
+          if (isOpen) setSearchQuery('');
         }}
         aria-expanded={isOpen}
         aria-label="Select language"
@@ -238,132 +185,90 @@ export default function GoogleTranslate() {
 
       {/* Floating Dropdown Card with Arrow Tip */}
       {isOpen && (
-        <div className={`lang-custom-dropdown-card ${showAllLanguages ? 'expanded-mode' : ''}`}>
+        <div className="lang-custom-dropdown-card">
           <div className="lang-dropdown-arrow" />
-          
-          {!showAllLanguages ? (
-            /* ── Default View: Featured Languages + Clickable "Choose Language" ── */
-            <>
-              {/* Clicking "Choose Language" reveals all languages */}
-              <button 
-                type="button" 
-                className="lang-dropdown-header-clickable"
-                onClick={() => setShowAllLanguages(true)}
-                title="Click to view all languages"
-              >
-                <div className="header-left">
-                  <Globe size={16} className="lang-header-icon" />
-                  <span className="lang-header-title">Choose Language</span>
-                </div>
-                <span className="lang-header-all-btn">
-                  All ({ALL_LANGUAGES.length}) ›
-                </span>
-              </button>
 
-              <div className="lang-dropdown-list">
-                {TOP_LANGUAGES.map((lang) => {
-                  const isSelected = currentLang === lang.code;
-                  const FlagComponent = lang.flag;
-                  return (
+          {/* Header */}
+          <div className="lang-dropdown-header">
+            <Globe size={15} className="lang-header-icon" />
+            <span className="lang-header-title">Choose Language</span>
+          </div>
+
+          {/* Main List: ONLY Tamil & English (No flags) */}
+          <div className="lang-primary-list">
+            {PRIMARY_LANGUAGES.map((lang) => {
+              const isSelected = currentLang === lang.code;
+              return (
+                <button
+                  key={lang.code}
+                  type="button"
+                  className={`lang-clean-item ${isSelected ? 'active' : ''}`}
+                  onClick={() => handleSelectLanguage(lang.code)}
+                >
+                  <span className="lang-clean-name">{lang.label}</span>
+                  {isSelected && <Check size={16} className="lang-check-icon" />}
+                </button>
+              );
+            })}
+
+            {/* If an 'other' language is currently selected, show it here as active */}
+            {activeOtherLang && (
+              <button
+                type="button"
+                className="lang-clean-item active"
+                onClick={() => handleSelectLanguage(activeOtherLang.code)}
+              >
+                <span className="lang-clean-name">{activeOtherLang.label}</span>
+                <Check size={16} className="lang-check-icon" />
+              </button>
+            )}
+          </div>
+
+          {/* Search Box for other languages */}
+          <div className="lang-search-section">
+            <div className="lang-search-box">
+              <Search size={14} className="lang-search-icon" />
+              <input 
+                type="text" 
+                placeholder="Search other languages..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {searchQuery && (
+                <button 
+                  type="button" 
+                  className="btn-clear-search" 
+                  onClick={() => setSearchQuery('')}
+                  aria-label="Clear search"
+                >
+                  <X size={12} />
+                </button>
+              )}
+            </div>
+
+            {/* Dropdown search results when typing */}
+            {searchQuery.trim().length > 0 && (
+              <div className="lang-search-dropdown-results">
+                {searchResults.length > 0 ? (
+                  searchResults.map((lang) => (
                     <button
                       key={lang.code}
                       type="button"
-                      className={`lang-dropdown-item ${isSelected ? 'active' : ''}`}
+                      className={`lang-clean-item ${currentLang === lang.code ? 'active' : ''}`}
                       onClick={() => handleSelectLanguage(lang.code)}
                     >
-                      <div className="lang-item-left">
-                        <FlagComponent />
-                        <span className="lang-item-name">{lang.label}</span>
-                      </div>
-                      {isSelected && <Check size={17} className="lang-check-icon" />}
+                      <span className="lang-clean-name">{lang.label}</span>
+                      {currentLang === lang.code && <Check size={15} className="lang-check-icon" />}
                     </button>
-                  );
-                })}
-              </div>
-
-              {/* Bottom Browse Button for extra clarity */}
-              <button 
-                type="button"
-                className="btn-browse-more-languages"
-                onClick={() => setShowAllLanguages(true)}
-              >
-                <Globe size={14} /> More Languages ({ALL_LANGUAGES.length})...
-              </button>
-            </>
-          ) : (
-            /* ── Expanded View: Search + Full Language List ── */
-            <div className="lang-expanded-container">
-              <div className="lang-expanded-top-bar">
-                <button 
-                  type="button" 
-                  className="btn-lang-back"
-                  onClick={() => {
-                    setShowAllLanguages(false);
-                    setSearchQuery('');
-                  }}
-                  title="Back to quick list"
-                >
-                  <ArrowLeft size={14} /> Back
-                </button>
-                <span className="expanded-heading">All Languages</span>
-              </div>
-
-              {/* Search input */}
-              <div className="lang-search-box">
-                <Search size={14} className="lang-search-icon" />
-                <input 
-                  type="text" 
-                  placeholder="Search language..." 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  autoFocus
-                />
-                {searchQuery && (
-                  <button 
-                    type="button" 
-                    className="btn-clear-search" 
-                    onClick={() => setSearchQuery('')}
-                    aria-label="Clear search"
-                  >
-                    <X size={12} />
-                  </button>
-                )}
-              </div>
-
-              {/* Scrollable list of all languages */}
-              <div className="lang-scroll-list">
-                {filteredLanguages.length > 0 ? (
-                  filteredLanguages.map((lang) => {
-                    const isSelected = currentLang === lang.code;
-                    const FlagComponent = lang.flag;
-                    return (
-                      <button
-                        key={lang.code}
-                        type="button"
-                        className={`lang-dropdown-item ${isSelected ? 'active' : ''}`}
-                        onClick={() => handleSelectLanguage(lang.code)}
-                      >
-                        <div className="lang-item-left">
-                          <FlagComponent />
-                          <div className="lang-names-stack">
-                            <span className="lang-native-name">{lang.native || lang.label}</span>
-                            {lang.native && lang.native !== lang.label && (
-                              <span className="lang-english-sub">({lang.label})</span>
-                            )}
-                          </div>
-                        </div>
-                        {isSelected && <Check size={16} className="lang-check-icon" />}
-                      </button>
-                    );
-                  })
+                  ))
                 ) : (
-                  <div className="lang-no-results">
-                    No languages found matching "{searchQuery}"
+                  <div className="lang-no-search-results">
+                    No matching languages
                   </div>
                 )}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
 
