@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { 
   ShieldAlert, 
   LogIn, 
@@ -16,7 +16,9 @@ import {
   Lock,
   Eye,
   EyeOff,
-  User
+  User,
+  ChevronDown,
+  Check
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import '../styles/AdminDashboard.css';
@@ -41,6 +43,25 @@ export default function AdminDashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [activePhotoModal, setActivePhotoModal] = useState(null);
+  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const statusOptions = [
+    { value: 'All', label: 'All Leads', dotColor: '#8A70B6' },
+    { value: 'Pending', label: 'Pending', dotColor: '#D97706' },
+    { value: 'Completed', label: 'Completed', dotColor: '#16A34A' }
+  ];
+
+  // Close custom dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsStatusDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Check if session token and user info are saved in local storage
   useEffect(() => {
@@ -366,17 +387,53 @@ export default function AdminDashboard() {
               {filteredLeads.length} {filteredLeads.length === 1 ? 'lead' : 'leads'}
             </span>
 
-            <div className="filter-group-wrapper">
-              <label htmlFor="admin-status-filter">Status:</label>
-              <select 
-                id="admin-status-filter"
-                value={statusFilter} 
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="All">All Leads</option>
-                <option value="Pending">Pending</option>
-                <option value="Completed">Completed</option>
-              </select>
+            <div className="filter-group-wrapper" ref={dropdownRef}>
+              <span className="filter-group-label">Status:</span>
+              <div className="custom-dropdown-container">
+                <button
+                  type="button"
+                  className={`custom-dropdown-trigger ${isStatusDropdownOpen ? 'open' : ''}`}
+                  onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
+                  aria-haspopup="listbox"
+                  aria-expanded={isStatusDropdownOpen}
+                >
+                  <span className="dropdown-selected-label">
+                    <span 
+                      className="status-dot" 
+                      style={{ 
+                        backgroundColor: statusOptions.find(o => o.value === statusFilter)?.dotColor || '#8A70B6' 
+                      }} 
+                    />
+                    <span>{statusOptions.find(o => o.value === statusFilter)?.label || 'All Leads'}</span>
+                  </span>
+                  <ChevronDown size={14} className={`dropdown-chevron ${isStatusDropdownOpen ? 'rotated' : ''}`} />
+                </button>
+
+                {isStatusDropdownOpen && (
+                  <ul className="custom-dropdown-menu" role="listbox">
+                    {statusOptions.map((option) => (
+                      <li
+                        key={option.value}
+                        role="option"
+                        aria-selected={statusFilter === option.value}
+                        className={`custom-dropdown-item ${statusFilter === option.value ? 'selected' : ''}`}
+                        onClick={() => {
+                          setStatusFilter(option.value);
+                          setIsStatusDropdownOpen(false);
+                        }}
+                      >
+                        <span className="item-content">
+                          <span className="status-dot" style={{ backgroundColor: option.dotColor }} />
+                          <span>{option.label}</span>
+                        </span>
+                        {statusFilter === option.value && (
+                          <Check size={14} className="dropdown-check-icon" />
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
           </div>
         </div>
