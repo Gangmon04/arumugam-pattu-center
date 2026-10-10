@@ -35,6 +35,24 @@ const OTHER_LANGUAGES = [
   { code: 'nl', label: 'Dutch (Nederlands)', short: 'NL' },
 ];
 
+const ALL_LANGUAGES = [...PRIMARY_LANGUAGES, ...OTHER_LANGUAGES];
+
+// Helper to reliably find language option even with partial or regional codes (e.g. 'zh-CN' vs 'zh')
+const findLanguageOption = (code) => {
+  if (!code) return PRIMARY_LANGUAGES[0];
+  const c = code.toLowerCase().trim();
+  // 1. Exact match
+  const exact = ALL_LANGUAGES.find((l) => l.code.toLowerCase() === c);
+  if (exact) return exact;
+  // 2. Prefix / base language match (e.g. 'zh' matches 'zh-CN' or vice versa)
+  const base = c.split('-')[0];
+  const prefix = ALL_LANGUAGES.find(
+    (l) => l.code.toLowerCase() === base || l.code.toLowerCase().startsWith(base) || base.startsWith(l.code.toLowerCase())
+  );
+  if (prefix) return prefix;
+  return PRIMARY_LANGUAGES[0];
+};
+
 export default function GoogleTranslate() {
   const [currentLang, setCurrentLang] = useState('en');
   const [isOpen, setIsOpen] = useState(false);
@@ -101,12 +119,12 @@ export default function GoogleTranslate() {
 
     // Detect active language from cookie or stored preference
     const checkLang = () => {
-      const match = document.cookie.match(/googtrans=\/en\/([a-z]{2})/i);
+      const match = document.cookie.match(/googtrans=\/en\/([a-zA-Z0-9_-]+)/i);
       if (match && match[1]) {
         setCurrentLang(match[1].toLowerCase());
       } else {
         const saved = localStorage.getItem('preferred_lang');
-        setCurrentLang(saved || 'en');
+        setCurrentLang(saved ? saved.toLowerCase() : 'en');
       }
     };
 
@@ -129,33 +147,65 @@ export default function GoogleTranslate() {
   }, []);
 
   const handleSelectLanguage = (langCode) => {
-    setCurrentLang(langCode);
+    setCurrentLang(langCode.toLowerCase());
     setIsOpen(false);
     setSearchQuery('');
     localStorage.setItem('preferred_lang', langCode);
+
+    if (langCode === 'en') {
+      // Clear translation cookies to return cleanly to original English
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      const host = window.location.hostname;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.${host}; path=/;`;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${host}; path=/;`;
+      document.cookie = `googtrans=/en/en; path=/;`;
+      
+      const select = document.querySelector('.goog-te-combo');
+      if (select) {
+        select.value = 'en';
+        select.dispatchEvent(new Event('change'));
+      }
+      setTimeout(() => {
+        window.location.reload();
+      }, 150);
+      return;
+    }
 
     // Set cookie for Google Translate
     document.cookie = `googtrans=/en/${langCode}; path=/;`;
     const host = window.location.hostname;
     document.cookie = `googtrans=/en/${langCode}; domain=.${host}; path=/;`;
+    document.cookie = `googtrans=/en/${langCode}; domain=${host}; path=/;`;
 
     // Trigger select change in Google Translate
     const select = document.querySelector('.goog-te-combo');
     if (select) {
-      select.value = langCode;
+      let targetVal = langCode;
+      const hasExact = Array.from(select.options).some((o) => o.value.toLowerCase() === langCode.toLowerCase());
+      if (!hasExact) {
+        const partial = Array.from(select.options).find(
+          (o) => o.value.toLowerCase().startsWith(langCode.toLowerCase().split('-')[0]) ||
+                 langCode.toLowerCase().startsWith(o.value.toLowerCase().split('-')[0])
+        );
+        if (partial) {
+          targetVal = partial.value;
+        }
+      }
+      select.value = targetVal;
       select.dispatchEvent(new Event('change'));
     } else {
       window.location.reload();
     }
   };
 
-  // Find active language display label
-  const allKnown = [...PRIMARY_LANGUAGES, ...OTHER_LANGUAGES];
-  const activeOption = allKnown.find((l) => l.code === currentLang) || PRIMARY_LANGUAGES[0];
+  // Find active language display option
+  const activeOption = findLanguageOption(currentLang);
 
-  // If active language is from other languages, include it in the top list so it can be unselected
-  const isOtherActive = !PRIMARY_LANGUAGES.some((l) => l.code === currentLang);
-  const activeOtherLang = isOtherActive ? OTHER_LANGUAGES.find((l) => l.code === currentLang) : null;
+  // Check if active language is one of the primary ones
+  const isPrimary = PRIMARY_LANGUAGES.some(
+    (l) => l.code.toLowerCase() === activeOption.code.toLowerCase()
+  );
+  const activeOtherLang = !isPrimary ? activeOption : null;
 
   // Filter other languages in search box
   const searchResults = searchQuery.trim()
@@ -166,46 +216,54 @@ export default function GoogleTranslate() {
     : [];
 
   return (
-    <div className="nav-lang-custom-picker" ref={dropdownRef}>
-      {/* Trigger Button in Navbar (e.g. 🌐 EN ⌵ or 🌐 TA ⌵) */}
+    <div 
+      className="nav-lang-custom-picker notranslate skiptranslate" 
+      ref={dropdownRef}
+      translate="no"
+    >
+      {/* Trigger Button in Navbar (e.g. 🌐 ZH ⌵ or 🌐 TA ⌵ or 🌐 EN ⌵) */}
       <button 
         type="button"
-        className={`btn-lang-trigger ${isOpen ? 'open' : ''}`}
+        className={`btn-lang-trigger notranslate skiptranslate ${isOpen ? 'open' : ''}`}
         onClick={() => {
           setIsOpen(!isOpen);
           if (isOpen) setSearchQuery('');
         }}
         aria-expanded={isOpen}
         aria-label="Select language"
+        translate="no"
       >
         <Globe size={16} className="lang-trigger-globe" />
-        <span className="lang-trigger-code">{activeOption.short || 'EN'}</span>
+        <span className="lang-trigger-code notranslate" translate="no">
+          {activeOption.short || 'EN'}
+        </span>
         <ChevronDown size={14} className={`lang-trigger-chevron ${isOpen ? 'rotated' : ''}`} />
       </button>
 
       {/* Floating Dropdown Card with Arrow Tip */}
       {isOpen && (
-        <div className="lang-custom-dropdown-card">
+        <div className="lang-custom-dropdown-card notranslate skiptranslate" translate="no">
           <div className="lang-dropdown-arrow" />
 
           {/* Header */}
-          <div className="lang-dropdown-header">
+          <div className="lang-dropdown-header notranslate" translate="no">
             <Globe size={15} className="lang-header-icon" />
-            <span className="lang-header-title">Choose Language</span>
+            <span className="lang-header-title notranslate" translate="no">Choose Language</span>
           </div>
 
           {/* Main List: ONLY Tamil & English (No flags) */}
-          <div className="lang-primary-list">
+          <div className="lang-primary-list notranslate" translate="no">
             {PRIMARY_LANGUAGES.map((lang) => {
-              const isSelected = currentLang === lang.code;
+              const isSelected = activeOption.code.toLowerCase() === lang.code.toLowerCase();
               return (
                 <button
                   key={lang.code}
                   type="button"
-                  className={`lang-clean-item ${isSelected ? 'active' : ''}`}
+                  className={`lang-clean-item notranslate ${isSelected ? 'active' : ''}`}
                   onClick={() => handleSelectLanguage(lang.code)}
+                  translate="no"
                 >
-                  <span className="lang-clean-name">{lang.label}</span>
+                  <span className="lang-clean-name notranslate" translate="no">{lang.label}</span>
                   {isSelected && <Check size={16} className="lang-check-icon" />}
                 </button>
               );
@@ -215,31 +273,37 @@ export default function GoogleTranslate() {
             {activeOtherLang && (
               <button
                 type="button"
-                className="lang-clean-item active"
+                className="lang-clean-item active notranslate"
                 onClick={() => handleSelectLanguage(activeOtherLang.code)}
+                translate="no"
               >
-                <span className="lang-clean-name">{activeOtherLang.label}</span>
+                <span className="lang-clean-name notranslate" translate="no">{activeOtherLang.label}</span>
                 <Check size={16} className="lang-check-icon" />
               </button>
             )}
           </div>
 
           {/* Search Box for other languages */}
-          <div className="lang-search-section">
-            <div className="lang-search-box">
+          <div className="lang-search-section notranslate" translate="no">
+            <div className="lang-search-box notranslate" translate="no">
               <Search size={14} className="lang-search-icon" />
               <input 
                 type="text" 
                 placeholder="Search other languages..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                className="notranslate skiptranslate"
+                translate="no"
+                autoComplete="off"
+                spellCheck="false"
               />
               {searchQuery && (
                 <button 
                   type="button" 
-                  className="btn-clear-search" 
+                  className="btn-clear-search notranslate" 
                   onClick={() => setSearchQuery('')}
                   aria-label="Clear search"
+                  translate="no"
                 >
                   <X size={12} />
                 </button>
@@ -248,21 +312,25 @@ export default function GoogleTranslate() {
 
             {/* Dropdown search results when typing */}
             {searchQuery.trim().length > 0 && (
-              <div className="lang-search-dropdown-results">
+              <div className="lang-search-dropdown-results notranslate" translate="no">
                 {searchResults.length > 0 ? (
-                  searchResults.map((lang) => (
-                    <button
-                      key={lang.code}
-                      type="button"
-                      className={`lang-clean-item ${currentLang === lang.code ? 'active' : ''}`}
-                      onClick={() => handleSelectLanguage(lang.code)}
-                    >
-                      <span className="lang-clean-name">{lang.label}</span>
-                      {currentLang === lang.code && <Check size={15} className="lang-check-icon" />}
-                    </button>
-                  ))
+                  searchResults.map((lang) => {
+                    const isSelected = activeOption.code.toLowerCase() === lang.code.toLowerCase();
+                    return (
+                      <button
+                        key={lang.code}
+                        type="button"
+                        className={`lang-clean-item notranslate ${isSelected ? 'active' : ''}`}
+                        onClick={() => handleSelectLanguage(lang.code)}
+                        translate="no"
+                      >
+                        <span className="lang-clean-name notranslate" translate="no">{lang.label}</span>
+                        {isSelected && <Check size={15} className="lang-check-icon" />}
+                      </button>
+                    );
+                  })
                 ) : (
-                  <div className="lang-no-search-results">
+                  <div className="lang-no-search-results notranslate" translate="no">
                     No matching languages
                   </div>
                 )}
@@ -273,7 +341,7 @@ export default function GoogleTranslate() {
       )}
 
       {/* Hidden Google Translate host for underlying translation engine */}
-      <div id="google_translate_hidden_element" className="google-translate-hidden" />
+      <div id="google_translate_hidden_element" className="google-translate-hidden notranslate skiptranslate" translate="no" />
     </div>
   );
 }
