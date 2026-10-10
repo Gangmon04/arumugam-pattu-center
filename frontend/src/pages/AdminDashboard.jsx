@@ -60,11 +60,19 @@ export default function AdminDashboard() {
         }
       });
       
-      const data = await res.json();
+      let data = {};
+      try {
+        data = await res.json();
+      } catch (parseErr) {
+        // Non-JSON response, such as 500 HTML from cloud serverless
+      }
       
-      if (res.status === 401 || !res.ok) {
+      if (res.status === 401) {
         setError(data.message || data.error || 'Invalid Admin Passcode. Access denied.');
         localStorage.removeItem('admin_passcode');
+        setIsAuthenticated(false);
+      } else if (!res.ok) {
+        setError(data.message || data.error || `Server returned status ${res.status}. Check server logs and environment variables.`);
         setIsAuthenticated(false);
       } else {
         setLeads(data.leads || data.data || []);
