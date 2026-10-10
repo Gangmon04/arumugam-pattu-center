@@ -33,39 +33,45 @@ export default function ReviewsPage() {
 
   const reviews = [
     { 
-      name: 'Priya, T. Nagar', 
-      review: 'Very good experience with Arumugam Pattu Center. They gave the best price for my kanchipuram sarees. Pickup was on time and payment was instant.', 
-      avatar: makeAvatar('P', '#5B3E96'),
+      name: 'Jabakumar Isaac', 
+      badge: '2 reviews · Google Review',
+      review: 'Excellent services(doorstep) and worth of money value that handed over to immediately. Mr. Murugan(proprietor) and his son Mr. Bharath having a deep knowledge in this field. Again best price (as compared with anyone) and less time consumption.', 
+      avatar: makeAvatar('J', '#5B3E96'),
       image: '/assets/images/kanchi.png'
     },
     { 
-      name: 'Meenakshi, Anna Nagar', 
-      review: 'Excellent service! The team was very polite and professional. Got a fair price for my bridal sarees. Highly recommended.', 
-      avatar: makeAvatar('M', '#6B46C1'),
-      image: '/assets/images/bridal.png'
-    },
-    { 
-      name: 'Lakshmi, Vadapalani', 
-      review: 'Free doorstep pickup service is very convenient. They evaluated the sarees transparently and paid instantly. Very satisfied!', 
-      avatar: makeAvatar('L', '#7C3AED'),
-      image: '/assets/images/temple.png'
-    },
-    { 
-      name: 'Revathi, Mylapore', 
-      review: 'I had old silk sarees which I thought were of no use. But they took everything and gave a good price. Thank you!', 
-      avatar: makeAvatar('R', '#8B5CF6'),
+      name: 'Yuvan Raja G R', 
+      badge: 'Local Guide · 14 reviews',
+      review: 'It was a clean process and attitude right when picking the call from Arumugam actually made us to sell our dresses. The price was reasonable was all type of clothes and Bharath explained everything while taking pattu sarees and all.', 
+      avatar: makeAvatar('Y', '#1A73E8'),
       image: '/assets/images/designer.png'
     },
     { 
-      name: 'Sangeetha, Velachery', 
-      review: 'Trustworthy and reliable. This is my second time selling sarees to them. Always a smooth and pleasant experience.', 
+      name: 'Shashii', 
+      badge: 'Verified Customer · Google Review',
+      review: "Very good service they came to my house and collected didn't charge anything extra and most importantly the person who came to collect was on time very precise which i really liked there's was no excuses and he was very friendly, had high patience and very polite i really liked their service 5 star for the service", 
       avatar: makeAvatar('S', '#4C1D95'),
+      image: '/assets/images/temple.png'
+    },
+    { 
+      name: 'Haritha R', 
+      badge: '2 reviews · Google Review',
+      review: 'I had a great experience at Arumugam Pattu Centre, a saree retailer. The prices are reasonable, which is nice. The checkout line was short, so I did not wait long. The store has a vibrant ambience that makes shopping fun. The staff were very helpful and friendly. Good management keeps everything running smoothly.', 
+      avatar: makeAvatar('H', '#C2185B'),
+      image: '/assets/images/bridal.png'
+    },
+    { 
+      name: 'Ganga', 
+      badge: '2 reviews · Google Review',
+      review: 'Arumugam Pattu Centre stands out as an excellent saree retailer, offering a delightful shopping experience. Their reasonably priced sarees are complemented by helpful staff who guide you through the selection process.', 
+      avatar: makeAvatar('G', '#E65100'),
       image: '/assets/images/antique.png'
     },
     { 
-      name: 'Kavitha, Tambaram', 
-      review: 'The best place to sell old pattu sarees. Polite staff, quick evaluation and instant payment. Highly recommend!', 
-      avatar: makeAvatar('K', '#6D28D9'),
+      name: 'Priya, T. Nagar', 
+      badge: 'Verified Customer · Google Review',
+      review: 'Very good experience with Arumugam Pattu Center. They gave the best price for my kanchipuram sarees. Pickup was on time and payment was instant.', 
+      avatar: makeAvatar('P', '#6B46C1'),
       image: '/assets/images/old_saree.png'
     }
   ];
@@ -137,7 +143,10 @@ export default function ReviewsPage() {
               <div className="reviews-card-footer">
                 <div className="reviews-card-author-box">
                   <img src={r.avatar} alt={r.name} className="reviews-card-avatar" />
-                  <span className="reviews-card-author-name">{r.name}</span>
+                  <div className="reviews-card-author-info">
+                    <span className="reviews-card-author-name">{r.name}</span>
+                    {r.badge && <span className="reviews-card-author-badge">{r.badge}</span>}
+                  </div>
                 </div>
                 <Quote size={20} color="var(--primary-color)" className="reviews-card-quote-icon" />
               </div>

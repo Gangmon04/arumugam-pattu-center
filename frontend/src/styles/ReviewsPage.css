@@ -193,10 +193,20 @@
   object-fit: cover;
 }
 
+.reviews-card-author-info {
+  display: flex;
+  flex-direction: column;
+}
+
 .reviews-card-author-name {
   color: var(--text-dark);
   font-weight: 600;
   font-size: 0.9rem;
+}
+
+.reviews-card-author-badge {
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
 .reviews-card-quote-icon {
