@@ -8,7 +8,7 @@ export default function FAQ() {
     { q: 'Do you offer free doorstep pickup?', a: 'Yes! We offer 100% free doorstep pickup across all areas in Chennai. Our executive will come to your home at your preferred time.' },
     { q: 'Is instant cash payment available?', a: 'Absolutely. Once the valuation is done and you agree to the price, we provide instant payment via Cash, GPay, or Bank Transfer immediately on the spot.' },
     { q: 'Do you buy damaged or very old sarees?', a: 'Yes, we buy silk sarees in any condition! Even if the silk is completely torn or damaged, we pay you for the pure zari content present in the borders and pallu.' },
-    { q: 'How much time does the valuation take?', a: 'The valuation process takes just 5-10 minutes per saree. We use advanced, non-destructive testing methods to give you an accurate quote instantly.' }
+    { q: 'How much time does the valuation take?', a: 'The valuation process takes just 5-10 minutes per saree. We use advanced, non-destructive testing methods to evaluate and offer the best price on the spot.' }
   ];
 
   const toggleFaq = (index) => {

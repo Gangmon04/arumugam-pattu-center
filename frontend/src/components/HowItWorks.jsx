@@ -1,4 +1,4 @@
-import { Camera, Search, Truck, HandCoins } from 'lucide-react';
+import { Camera, Truck, Scale, HandCoins } from 'lucide-react';
 
 export default function HowItWorks() {
   return (
@@ -11,29 +11,29 @@ export default function HowItWorks() {
         <div className="step-item">
           <div className="step-icon-circle"><Camera size={24} /></div>
           <div className="step-number">1</div>
-          <h4>Upload Photos</h4>
-          <p>Upload clear photos of your saree</p>
-        </div>
-        <div className="step-line"></div>
-        <div className="step-item">
-          <div className="step-icon-circle"><Search size={24} /></div>
-          <div className="step-number">2</div>
-          <h4>Get Instant Quote</h4>
-          <p>We evaluate and give best price instantly</p>
+          <h4>Upload & Book</h4>
+          <p>Share saree photos & schedule convenient pickup</p>
         </div>
         <div className="step-line"></div>
         <div className="step-item">
           <div className="step-icon-circle"><Truck size={24} /></div>
-          <div className="step-number">3</div>
+          <div className="step-number">2</div>
           <h4>Free Pickup</h4>
-          <p>We pickup your saree from your doorstep</p>
+          <p>Our executive visits your doorstep at zero cost</p>
+        </div>
+        <div className="step-line"></div>
+        <div className="step-item">
+          <div className="step-icon-circle"><Scale size={24} /></div>
+          <div className="step-number">3</div>
+          <h4>On-Spot Evaluation</h4>
+          <p>Transparent zari testing & valuation in front of you</p>
         </div>
         <div className="step-line"></div>
         <div className="step-item">
           <div className="step-icon-circle"><HandCoins size={24} /></div>
           <div className="step-number">4</div>
           <h4>Instant Cash</h4>
-          <p>Get instant cash on the spot</p>
+          <p>Get instant cash or UPI payment on the spot</p>
         </div>
       </div>
     </div>
