@@ -11,7 +11,12 @@ import {
   ExternalLink,
   X,
   Image as ImageIcon,
-  LogOut
+  LogOut,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  User
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import '../styles/AdminDashboard.css';
@@ -26,7 +31,10 @@ const WhatsAppIcon = ({ size = 16 }) => (
 export default function AdminDashboard() {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [passcode, setPasscode] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState('');
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -34,29 +42,36 @@ export default function AdminDashboard() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [activePhotoModal, setActivePhotoModal] = useState(null);
 
-  // Check if passcode is saved in local storage
+  // Check if session token and user info are saved in local storage
   useEffect(() => {
-    const savedPasscode = localStorage.getItem('admin_passcode');
-    if (savedPasscode) {
-      verifyAndFetch(savedPasscode);
+    const token = localStorage.getItem('admin_token');
+    const savedUser = localStorage.getItem('admin_user');
+    if (savedUser) {
+      try {
+        setCurrentUser(JSON.parse(savedUser));
+      } catch (e) {
+        // Invalid JSON
+      }
+    }
+    if (token) {
+      fetchLeads(token);
     }
   }, []);
 
-  const verifyAndFetch = async (codeToVerify) => {
-    if (!codeToVerify || !codeToVerify.trim()) {
-      setError('Please enter the admin passcode.');
+  const fetchLeads = async (token) => {
+    const activeToken = token || localStorage.getItem('admin_token');
+    if (!activeToken) {
       setIsAuthenticated(false);
       return;
     }
 
     setLoading(true);
     setError('');
-    const cleanPasscode = codeToVerify.trim();
 
     try {
       const res = await fetch('/api/bookings', {
         headers: {
-          'Authorization': `Bearer ${cleanPasscode}`
+          'Authorization': `Bearer ${activeToken}`
         }
       });
       
@@ -67,17 +82,14 @@ export default function AdminDashboard() {
         // Non-JSON response, such as 500 HTML from cloud serverless
       }
       
-      if (res.status === 401) {
-        setError(data.message || data.error || 'Invalid Admin Passcode. Access denied.');
-        localStorage.removeItem('admin_passcode');
-        setIsAuthenticated(false);
+      if (res.status === 401 || res.status === 403) {
+        setError(data.message || 'Session expired or access denied. Please sign in again.');
+        handleLogout();
       } else if (!res.ok) {
         setError(data.message || data.error || `Server returned status ${res.status}. Check server logs and environment variables.`);
-        setIsAuthenticated(false);
       } else {
         setLeads(data.leads || data.data || []);
         setIsAuthenticated(true);
-        localStorage.setItem('admin_passcode', cleanPasscode);
       }
     } catch (err) {
       console.error(err);
@@ -87,18 +99,58 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (!passcode || !passcode.trim()) {
-      setError('Please enter the admin passcode.');
+    if (!email.trim() || !password) {
+      setError('Please enter both email and password.');
       return;
     }
-    verifyAndFetch(passcode);
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          password
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        setError(data.message || 'Invalid email or password.');
+        setIsAuthenticated(false);
+        return;
+      }
+
+      const { token, user } = data.data;
+      localStorage.setItem('admin_token', token);
+      localStorage.setItem('admin_user', JSON.stringify(user));
+      setCurrentUser(user);
+      setIsAuthenticated(true);
+      setPassword('');
+      fetchLeads(token);
+    } catch (err) {
+      console.error(err);
+      setError('Could not connect to the authentication server. Please ensure the backend is running.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_user');
     localStorage.removeItem('admin_passcode');
-    setPasscode('');
+    setEmail('');
+    setPassword('');
+    setCurrentUser(null);
     setIsAuthenticated(false);
     setLeads([]);
   };
@@ -117,12 +169,12 @@ export default function AdminDashboard() {
     );
 
     try {
-      const activeCode = localStorage.getItem('admin_passcode') || passcode;
+      const activeToken = localStorage.getItem('admin_token');
       const res = await fetch(`/api/bookings/${leadId}/status`, {
         method: 'PATCH',
         headers: { 
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${activeCode?.trim()}`
+          'Authorization': `Bearer ${activeToken?.trim()}`
         },
         body: JSON.stringify({ status: newStatus }),
       });
@@ -184,26 +236,58 @@ export default function AdminDashboard() {
               <ShieldAlert size={48} />
             </div>
             <h2>Admin Portal</h2>
-            <p>Access restricted. Please enter the administrator passcode to view customer leads.</p>
+            <p>Access restricted. Please sign in with your administrator account to view customer leads.</p>
             
             <form onSubmit={handleLogin} className="admin-login-form">
-              <div className="form-group">
-                <input 
-                  type="password" 
-                  placeholder="Enter passcode" 
-                  value={passcode}
-                  onChange={(e) => setPasscode(e.target.value)}
-                  required 
-                />
+              <div className="admin-login-field-group">
+                <label htmlFor="admin-email" className="login-field-label">Email Address</label>
+                <div className="input-with-icon">
+                  <Mail size={17} className="input-field-icon" />
+                  <input 
+                    id="admin-email"
+                    type="email" 
+                    placeholder="name@example.com" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="email"
+                    required 
+                  />
+                </div>
               </div>
+
+              <div className="admin-login-field-group">
+                <label htmlFor="admin-password" className="login-field-label">Password</label>
+                <div className="input-with-icon">
+                  <Lock size={17} className="input-field-icon" />
+                  <input 
+                    id="admin-password"
+                    type={showPassword ? "text" : "password"} 
+                    placeholder="Enter your password" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="current-password"
+                    required 
+                  />
+                  <button 
+                    type="button" 
+                    className="btn-toggle-password" 
+                    onClick={() => setShowPassword(!showPassword)}
+                    tabIndex={-1}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
               {error && <span className="login-error-text"><AlertCircle size={14} /> {error}</span>}
               <button type="submit" className="btn-admin-login" disabled={loading}>
-                {loading ? 'Authenticating...' : <><LogIn size={18} /> Enter Portal</>}
+                {loading ? 'Authenticating...' : <><LogIn size={18} /> Sign In</>}
               </button>
             </form>
 
             <div className="admin-card-footer-badge">
-              Arumugam Pattu Center • Management Portal
+              Arumugam Pattu Center • Secure Management
             </div>
           </div>
         </div>
@@ -223,10 +307,17 @@ export default function AdminDashboard() {
             <p>Manage and track your incoming old pattu saree pickup requests.</p>
           </div>
           <div className="admin-header-actions-compact">
+            {currentUser && (
+              <div className="admin-user-pill" title={`Logged in as ${currentUser.email}`}>
+                <User size={13} />
+                <span>{currentUser.name}</span>
+                <span className="admin-user-role">{currentUser.role}</span>
+              </div>
+            )}
             <button 
               type="button"
               className="btn-refresh-icon" 
-              onClick={() => verifyAndFetch(localStorage.getItem('admin_passcode'))} 
+              onClick={() => fetchLeads()} 
               title="Refresh leads" 
               aria-label="Refresh leads"
               disabled={loading}

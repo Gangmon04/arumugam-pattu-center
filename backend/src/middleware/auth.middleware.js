@@ -6,24 +6,29 @@ const authMiddleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-      throw new AppError("Authorization token is required", 401);
+      return next(new AppError("Authorization token is required", 401));
     }
 
     const [type, token] = authHeader.split(" ");
 
     if (type !== "Bearer" || !token) {
-      throw new AppError("Invalid authorization format", 401);
+      return next(new AppError("Invalid authorization format", 401));
     }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    );
+    if (!process.env.JWT_SECRET) {
+      return next(new AppError("Server configuration error: JWT_SECRET missing", 500));
+    }
 
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-
     next();
   } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      return next(new AppError("Session expired. Please log in again.", 401));
+    }
+    if (error.name === "JsonWebTokenError") {
+      return next(new AppError("Invalid session token. Please log in again.", 401));
+    }
     next(error);
   }
 };
