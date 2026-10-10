@@ -5,7 +5,7 @@
 
 export const sendAdminSMSNotification = async (booking) => {
   const apiKey = process.env.FAST2SMS_API_KEY || process.env.SMS_API_KEY;
-  const adminPhone = process.env.ADMIN_NOTIFICATION_PHONE || "7358443545";
+  const adminPhone = process.env.ADMIN_NOTIFICATION_PHONE;
 
   if (!apiKey) {
     console.warn("[SMS Service] FAST2SMS_API_KEY not configured. Skipping SMS alert.");
@@ -13,7 +13,7 @@ export const sendAdminSMSNotification = async (booking) => {
   }
 
   if (!adminPhone) {
-    console.warn("[SMS Service] ADMIN_NOTIFICATION_PHONE not set. Skipping SMS alert.");
+    console.warn("[SMS Service] ADMIN_NOTIFICATION_PHONE not set in environment. Skipping SMS alert.");
     return { success: false, reason: "Admin phone not set" };
   }
 

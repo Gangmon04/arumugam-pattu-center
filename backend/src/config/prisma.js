@@ -11,9 +11,13 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 dotenv.config();
 
-const connectionString =
-  process.env.DATABASE_URL ||
-  "postgresql://neondb_owner:npg_c3hsmqnSy2Tp@ep-dawn-breeze-b54i341h-pooler.c-7.us-east-2.aws.neon.tech/neondb?channel_binding=require&sslmode=require";
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error(
+    "[Prisma Config Error] DATABASE_URL environment variable is missing. Please set it in your .env file."
+  );
+}
 
 const adapter = new PrismaPg({
   connectionString,
