@@ -18,9 +18,9 @@
 }
 
 .nav-logo .logo-img {
-  height: 62px;
+  height: 60px;
   width: auto;
-  max-width: 260px;
+  max-width: 240px;
   object-fit: contain;
   display: block;
   transition: transform 0.2s ease;
