@@ -43,9 +43,41 @@ export default function GoogleTranslate() {
       }
     };
 
+    // 4. Force removal of top banner frame & reset body/html offset to 0
+    const removeGoogleBanner = () => {
+      if (document.body.style.top && document.body.style.top !== '0px') {
+        document.body.style.top = '0px';
+      }
+      if (document.documentElement.style.top && document.documentElement.style.top !== '0px') {
+        document.documentElement.style.top = '0px';
+      }
+      const banners = document.querySelectorAll(
+        '.goog-te-banner-frame, iframe.goog-te-banner-frame, .VIpgJd-ZVi9I-ORHb-OEVmcd, iframe[id^=":"]'
+      );
+      banners.forEach((b) => {
+        b.style.setProperty('display', 'none', 'important');
+        b.style.setProperty('visibility', 'hidden', 'important');
+        b.style.setProperty('height', '0px', 'important');
+      });
+    };
+
     checkLang();
-    const interval = setInterval(checkLang, 1500);
-    return () => clearInterval(interval);
+    removeGoogleBanner();
+
+    // Observe changes to body and documentElement to catch Google Translate injections immediately
+    const observer = new MutationObserver(removeGoogleBanner);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['style', 'class'] });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'class'] });
+
+    const interval = setInterval(() => {
+      checkLang();
+      removeGoogleBanner();
+    }, 600);
+
+    return () => {
+      observer.disconnect();
+      clearInterval(interval);
+    };
   }, []);
 
   // Quick 1-click switch helper (e.g. for English or Tamil)

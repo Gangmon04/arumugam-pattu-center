@@ -58,6 +58,37 @@ body {
   background-color: var(--bg-cream);
   color: var(--text-dark);
   line-height: 1.5;
+  top: 0px !important;
+}
+
+/* ── Prevent Google Translate Top Banner Bar & Pushdown ───────── */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+iframe[class*="goog-te-banner-frame"],
+.VIpgJd-ZVi9I-ORHb-OEVmcd,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0px !important;
+  width: 0px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html {
+  top: 0px !important;
+}
+
+body {
+  margin-top: 0px !important;
+  padding-top: 0px !important;
+}
+
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 .app-container {
